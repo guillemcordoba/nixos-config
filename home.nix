@@ -17,9 +17,13 @@
 			firefox
 		];
 
-		# file.".config/qtile".source = ./dotfiles/qtile;
-		# file.".config/alacritty".source = ./dotfiles/alacritty;
-		# file.".config/helix".source = ./dotfiles/helix;
+		sessionVariables = {
+			EDITOR = "hx";
+		};
+
+		file.".config/qtile".source = ./configs/qtile;
+		file.".config/alacritty".source = ./configs/alacritty;
+		file.".config/helix".source = ./configs/helix;
 	};
 
 	programs = {
@@ -40,6 +44,7 @@
 				push = {
 					autoSetupRemote = true;
 				};
+				core.editor = "hx";
 			};
 		};
 		lazygit.enable = true;

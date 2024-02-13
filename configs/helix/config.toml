@@ -1,0 +1,29 @@
+theme = "dark_plus"
+
+[editor.soft-wrap]
+enable = true
+
+[editor.file-picker]
+hidden = false
+
+[editor]
+cursorline = true
+lsp.display-inlay-hints = true
+bufferline = "always"
+
+[editor.indent-guides]
+render = true
+
+[keys.insert]
+"C-s" = ":w"
+"C-h" = "move_char_left"
+"C-l" = "move_char_right"
+"C-j" = "move_line_down"
+"C-k" = "move_line_up"
+
+[keys.select]
+"C-s" = ":w"
+
+[keys.normal]
+"C-s" = ":w"
+
