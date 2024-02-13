@@ -67,10 +67,6 @@
         eval "$(starship init bash)"
         export DIRENV_LOG_FORMAT=
 			'';
-
-			promptInit = ''
-		    PS1="$ ";
-			'';
 		};
 
 		git = {
