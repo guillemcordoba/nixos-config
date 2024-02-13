@@ -15,6 +15,8 @@
 	    zoom-us
 			chromium
 			firefox
+			rust-analyzer
+			nodePackages.typescript-language-server
 		];
 
 		sessionVariables = {
@@ -31,7 +33,44 @@
 
 		direnv = {
 			enable = true;
+			# silent = true;
+			enableBashIntegration = true;
 			nix-direnv.enable = true;
+		};
+
+		starship = {
+			enable = true;
+			settings = {
+	      cmd_duration = {
+	        min_time = 2000;
+	        # show_milliseconds = false;
+	        # disabled = false;
+	        show_notifications = true;
+	        min_time_to_notify = 15000;
+	      };
+				nix_shell = {
+		      format = "[$symbol$name]($style) ";
+				};
+				rust = {
+		      format = "$symbol";
+				};
+				nodejs = {
+		      format = "$symbol";
+				};
+      };
+		};
+
+		bash = {
+			enable = true;
+
+			initExtra = ''
+        eval "$(starship init bash)"
+        export DIRENV_LOG_FORMAT=
+			'';
+
+			promptInit = ''
+		    PS1="$ ";
+			'';
 		};
 
 		git = {

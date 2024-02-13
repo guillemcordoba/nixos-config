@@ -62,12 +62,15 @@
   users.users.guillem = {
     isNormalUser = true;
     description = "guillem";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "audio"];
     packages = with pkgs; [];
   };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.pulseaudio = true;
+
+  sound.enable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -79,6 +82,10 @@
     alacritty
     cachix
     killall
+  ];
+
+  fonts.packages = with pkgs; [
+    (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -109,6 +116,10 @@
   system.stateVersion = "23.11"; # Did you read the comment?
 
   nix = {
-    settings.experimental-features = ["nix-command" "flakes"];
+    settings = {
+      experimental-features = ["nix-command" "flakes"];
+
+      trusted-users = ["root" "guillem"];
+    };
   };
 }

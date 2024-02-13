@@ -37,6 +37,13 @@
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   hardware = {
+    enableAllFirmware = true;
+    
+    pulseaudio = {
+      enable = true;
+      support32Bit = true;
+    };
+  
     opengl = {
       enable = true;
       driSupport = true;
@@ -50,8 +57,6 @@
       open = false;
       nvidiaSettings = true;
       package = config.boot.kernelPackages.nvidiaPackages.stable;
-
-      
     };
 
   };
