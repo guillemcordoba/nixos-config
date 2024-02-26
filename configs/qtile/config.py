@@ -24,11 +24,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import os
 from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 from libqtile.log_utils import logger
+from qtile_extras import widget
+from qtile_extras.widget.decorations import PowerLineDecoration
 
 mod = "mod1"
 terminal = guess_terminal()
@@ -157,124 +160,105 @@ widget_defaults = dict(
     fontsize=12,
     padding=3,
 )
-extension_defaults = widget_defaults.copy()
+
+powerline = {
+    "decorations": [
+        PowerLineDecoration(path = "forward_slash", padding_x = 16)
+    ]
+}
+
+s = widget.Battery() if os.environ.get('DEVICE_TYPE', 'DESKTOP') == 'LAPTOP' else []
+main_screen = Screen(
+    top=bar.Bar(
+        [
+            # widget.CurrentLayout(),
+            widget.GroupBox(
+                highlight_method = "line",
+            ),
+            widget.TextBox(
+                text = '|',
+                foreground = "#ffffff",
+                padding = 2 
+            ),
+            widget.WindowName(**powerline),
+            widget.Chord(
+                chords_colors={
+                    "launch": ("#ff0000", "#ffffff"),
+                },
+                name_transform=lambda name: name.upper(),
+                **powerline
+            ),
+            widget.Prompt(**powerline),
+            # widget.TextBox("default config", name="default"),
+            # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
+            # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
+            # widget.StatusNotifier(),
+            # widget.Notify(),
+            widget.Systray(**powerline),
+            widget.TextBox("Network", foreground="#ffffff", background = "#303F9F", **powerline),
+            widget.NetGraph(graph_color = "#ffffff", background = "#303F9F", **powerline),
+            widget.TextBox("CPU", foreground="#ffffff", background = "#E64A19", **powerline),
+            widget.CPUGraph(graph_color = "#ffffff", background = "#E64A19", **powerline),
+        ] +
+        (
+            [widget.Battery(background = "#7C4DFF", **powerline)] if os.environ.get('DEVICE_TYPE', 'DESKTOP') == 'LAPTOP' else []
+        ) +
+        [
+            widget.Clock(format="%d-%m-%Y %a %I:%M %p", background = "#FF9800"),
+        ],
+        24,
+        # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
+        # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
+    ),
+    wallpaper_mode='stretch',
+    wallpaper='~/.config/qtile/wallpaper.jpg',
+    # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
+    # By default we handle these events delayed to already improve performance, however your system might still be struggling
+    # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
+    # x11_drag_polling_rate = 60,
+)
+
+secondary_screen = Screen(
+    top=bar.Bar(
+        [
+            # widget.CurrentLayout(),
+            widget.GroupBox(
+                highlight_method = "line",
+            ),
+            widget.TextBox(
+                text = '|',
+                foreground = "#ffffff",
+                padding = 2 
+            ),
+            widget.WindowName(),
+            widget.Chord(
+                chords_colors={
+                    "launch": ("#ff0000", "#ffffff"),
+                },
+                name_transform=lambda name: name.upper(),
+            ),
+            # widget.TextBox("default config", name="default"),
+            # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
+            # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
+            # widget.StatusNotifier(),
+            # widget.Systray(),
+            # widget.
+        ],
+        24,
+        # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
+        # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
+    ),
+    wallpaper_mode='stretch',
+    wallpaper='~/.config/qtile/wallpaper.jpg',
+    # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
+    # By default we handle these events delayed to already improve performance, however your system might still be struggling
+    # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
+    # x11_drag_polling_rate = 60,
+)
 
 screens = [
-    Screen(
-        top=bar.Bar(
-            [
-                # widget.CurrentLayout(),
-                widget.GroupBox(),
-                widget.Prompt(),
-                widget.WindowName(),
-                widget.Chord(
-                    chords_colors={
-                        "launch": ("#ff0000", "#ffffff"),
-                    },
-                    name_transform=lambda name: name.upper(),
-                ),
-                # widget.TextBox("default config", name="default"),
-                # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-                # widget.StatusNotifier(),
-                # widget.Notify(),
-                widget.Systray(),
-                widget.TextBox("Network", foreground="#d75f5f"),
-                widget.NetGraph(),
-                widget.TextBox("CPU", foreground="#d75f5f"),
-                widget.CPUGraph(),
-                widget.Battery(),
-                widget.Clock(format="%d-%m-%Y %a %I:%M %p"),
-                widget.QuickExit(),
-                # widget.
-            ],
-            24,
-            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
-        ),
-        wallpaper_mode='stretch',
-        wallpaper='~/.config/qtile/wallpaper.jpg',
-        # wallpaper='~/Baixades/201505estacio-de-sants1.optimized.503097b8.jpg',
-        # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
-        # By default we handle these events delayed to already improve performance, however your system might still be struggling
-        # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
-        # x11_drag_polling_rate = 60,
-    ),
-    Screen(
-        top=bar.Bar(
-            [
-                # widget.CurrentLayout(),
-                widget.GroupBox(),
-                widget.Prompt(),
-                widget.WindowName(),
-                widget.Chord(
-                    chords_colors={
-                        "launch": ("#ff0000", "#ffffff"),
-                    },
-                    name_transform=lambda name: name.upper(),
-                ),
-                # widget.TextBox("default config", name="default"),
-                # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-                # widget.StatusNotifier(),
-                # widget.Systray(),
-                widget.TextBox("Network", foreground="#d75f5f"),
-                widget.NetGraph(),
-                widget.TextBox("CPU", foreground="#d75f5f"),
-                widget.CPUGraph(),
-                widget.Battery(),
-                widget.Clock(format="%d-%m-%Y %a %I:%M %p"),
-                widget.QuickExit(),
-                # widget.
-            ],
-            24,
-            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
-        ),
-        wallpaper_mode='stretch',
-        wallpaper='~/.config/qtile/wallpaper.jpg',
-        # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
-        # By default we handle these events delayed to already improve performance, however your system might still be struggling
-        # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
-        # x11_drag_polling_rate = 60,
-    ),
-    Screen(
-        top=bar.Bar(
-            [
-                # widget.CurrentLayout(),
-                widget.GroupBox(),
-                widget.Prompt(),
-                widget.WindowName(),
-                widget.Chord(
-                    chords_colors={
-                        "launch": ("#ff0000", "#ffffff"),
-                    },
-                    name_transform=lambda name: name.upper(),
-                ),
-                # widget.TextBox("default config", name="default"),
-                # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-                # widget.StatusNotifier(),
-                widget.TextBox("Network", foreground="#d75f5f"),
-                widget.NetGraph(),
-                widget.TextBox("CPU", foreground="#d75f5f"),
-                widget.CPUGraph(),
-                widget.Battery(),
-                widget.Clock(format="%d-%m-%Y %a %I:%M %p"),
-                widget.QuickExit(),
-                # widget.
-            ],
-            24,
-            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
-        ),
-        wallpaper_mode='stretch',
-        wallpaper='~/.config/qtile/wallpaper.jpg',
-        # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
-        # By default we handle these events delayed to already improve performance, however your system might still be struggling
-        # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
-        # x11_drag_polling_rate = 60,
-    ),
+    secondary_screen,
+    main_screen
 ]
 
 # Drag floating layouts.

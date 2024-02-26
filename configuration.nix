@@ -51,7 +51,12 @@
       layout = "es";
       variant = "cat";
     };
-    windowManager.qtile.enable = true;
+    windowManager.qtile = {
+      enable = true;
+      extraPackages = python3Packages: with python3Packages; [
+        qtile-extras
+      ];
+    };
     displayManager.lightdm.enable = true;
   };
 

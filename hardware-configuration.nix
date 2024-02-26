@@ -4,6 +4,13 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
+
+  environment.sessionVariables = {
+    # Global env var to be able to have the same config accross different types of machines
+    # Valid values: "DESKTOP" or "LAPTOP"
+    DEVICE_TYPE = "DESKTOP";
+  };
+  
   imports =
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
