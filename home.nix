@@ -30,6 +30,7 @@
 
 	programs = {
 		home-manager.enable = true;
+		zoxide.enable = true;
 
 		direnv = {
 			enable = true;
@@ -63,8 +64,14 @@
 		bash = {
 			enable = true;
 
+			shellAliases = {
+				cd = "z";
+				lg = "lazygit";
+			};
+
 			initExtra = ''
         eval "$(starship init bash)"
+        eval "$(zoxide init bash)"
         export DIRENV_LOG_FORMAT=
 			'';
 		};

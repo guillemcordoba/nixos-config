@@ -81,6 +81,9 @@
     alacritty
     cachix
     killall
+    lf
+    pavucontrol
+    nil
   ];
 
   fonts.packages = with pkgs; [
