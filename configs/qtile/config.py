@@ -201,10 +201,10 @@ main_screen = Screen(
             widget.CPUGraph(graph_color = "#ffffff", background = "#E64A19", **powerline),
         ] +
         (
-            [widget.Battery(background = "#7C4DFF", **powerline)] if os.environ.get('DEVICE_TYPE', 'DESKTOP') == 'LAPTOP' else []
+            [widget.Battery(background = "#FF4081", **powerline)] if os.environ.get('DEVICE_TYPE', 'DESKTOP') == 'LAPTOP' else []
         ) +
         [
-            widget.Clock(format="%d-%m-%Y %a %I:%M %p", background = "#FF9800"),
+            widget.Clock(format="%d-%m-%Y %a %I:%M %p", background = "#303F9F"),
         ],
         24,
         # border_width=[2, 0, 2, 0],  # Draw top and bottom borders

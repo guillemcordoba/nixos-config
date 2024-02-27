@@ -89,6 +89,7 @@
     lf
     pavucontrol
     nil
+    caddy
   ];
 
   fonts.packages = with pkgs; [
