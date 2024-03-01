@@ -68,7 +68,6 @@
     isNormalUser = true;
     description = "guillem";
     extraGroups = [ "networkmanager" "wheel" "audio"];
-    packages = with pkgs; [];
   };
 
   # Allow unfree packages

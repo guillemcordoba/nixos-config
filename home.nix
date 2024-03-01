@@ -17,6 +17,7 @@
 			firefox
 			rust-analyzer
 			nodePackages.typescript-language-server
+			nodejs_20
 		];
 
 		sessionVariables = {

@@ -32,6 +32,7 @@ from libqtile.utils import guess_terminal
 from libqtile.log_utils import logger
 from qtile_extras import widget
 from qtile_extras.widget.decorations import PowerLineDecoration
+import time
 
 mod = "mod1"
 terminal = guess_terminal()
@@ -47,7 +48,19 @@ def new_group_prompt(qtile):
         # qtile.group[text].toscreen()
 
     prompt = qtile.widgets_map["prompt"]
-    prompt.start_input("New group name: ", add_group)
+    prompt.start_input("New group name", add_group)
+
+@lazy.function
+def new_project_group_prompt(qtile):
+    def add_project_group(text):
+        qtile.addgroup(group=text)
+        qtile.spawn(f"qtile cmd-obj -o group {text} -f toscreen")
+        qtile.spawn(f"""alacritty --hold --command ''bash -c 'eval "$(zoxide init bash)";z {text};hx'''""", shell = True)
+        qtile.spawn(f"""alacritty --hold --command ''bash -c 'eval "$(zoxide init bash)";z {text};pwd;bash'''""", shell = True)
+        qtile.spawn(f"""alacritty --hold --command ''bash -c 'eval "$(zoxide init bash)";z {text};lazygit'''""", shell = True)
+
+    prompt = qtile.widgets_map["prompt"]
+    prompt.start_input("Project name", add_project_group)
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -103,6 +116,7 @@ keys = [
     Key([mod], "m", lazy.togroup(prompt="Move to group")),
     Key([mod], "c", lazy.labelgroup(prompt="Change group name")),
     Key([mod], "n", new_group_prompt),
+    Key([mod, "Shift"], "n", new_project_group_prompt),
     Key([], "Print", lazy.spawn("scrot /home/guillem/Imatges")),
 
 ]
