@@ -89,6 +89,7 @@
     pavucontrol
     nil
     caddy
+    appimage-run
   ];
 
   fonts.packages = with pkgs; [
