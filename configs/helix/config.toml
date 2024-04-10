@@ -10,20 +10,14 @@ hidden = false
 cursorline = true
 lsp.display-inlay-hints = true
 bufferline = "always"
+auto-save = true
 
 [editor.indent-guides]
 render = true
 
 [keys.insert]
-"C-s" = ":w"
 "C-h" = "move_char_left"
 "C-l" = "move_char_right"
 "C-j" = "move_line_down"
 "C-k" = "move_line_up"
-
-[keys.select]
-"C-s" = ":w"
-
-[keys.normal]
-"C-s" = ":w"
-
+# "Alt-o" = ""

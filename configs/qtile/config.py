@@ -154,7 +154,7 @@ groups = [
 #     )
 
 layouts = [
-    layout.Columns(margin=8, insert_position=1, border_focus='#E64A19', border_on_single = True),
+    layout.Columns(margin=4, insert_position=1, border_focus='#E64A19', border_on_single = True, border_width = 4),
     # layout.Max(),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=20hl),

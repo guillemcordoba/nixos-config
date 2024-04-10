@@ -24,6 +24,13 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  virtualisation.docker.enable = true;
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
+  };
+  # virtualisation.podman.enable = true;
+
   # Set your time zone.
   time.timeZone = "Europe/Madrid";
 
@@ -67,13 +74,12 @@
   users.users.guillem = {
     isNormalUser = true;
     description = "guillem";
-    extraGroups = [ "networkmanager" "wheel" "audio"];
+    extraGroups = [ "networkmanager" "wheel" "audio" "docker"];
   };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.pulseaudio = true;
-
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -90,6 +96,10 @@
     nil
     caddy
     appimage-run
+    unzip
+    xsel
+    transmission_4-gtk 
+    zulu8
   ];
 
   fonts.packages = with pkgs; [
@@ -108,6 +118,14 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+
+  # services.transmission = {
+  #   enable = true;
+  #   openFirewall = true; #Open firewall for RPC
+  #   openRPCPort = true; #Open firewall for RPC
+  #   user = "transmission";
+  #   group = "transmission";
+  # };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

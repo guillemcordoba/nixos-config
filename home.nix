@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: 
+{ config, pkgs, inputs, system, ... }: 
 
 {
 	home =  {
@@ -8,7 +8,8 @@
 	  stateVersion = "23.11";
 
 	  packages = with pkgs; [
-	    helix
+		  inputs.helix.outputs.packages.${system}.default
+	    # helix
 	    discord
 	    spotify
 	    signal-desktop
@@ -18,6 +19,7 @@
 			rust-analyzer
 			nodePackages.typescript-language-server
 			nodejs_20
+			peek
 		];
 
 		sessionVariables = {
