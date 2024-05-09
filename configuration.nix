@@ -100,6 +100,7 @@
     xsel
     transmission_4-gtk 
     zulu8
+    nixfmt
   ];
 
   fonts.packages = with pkgs; [

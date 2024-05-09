@@ -51,11 +51,25 @@ def new_group_prompt(qtile):
     prompt.start_input("New group name", add_group)
 
 @lazy.function
+def move_group_left(qtile):
+    index = qtile.groups.index(qtile.current_group)
+    if index > 0:
+        group_on_the_left = qtile.groups[index - 1]
+        qtile.switch_groups(qtile.current_group.name, group_on_the_left.name)
+
+@lazy.function
+def move_group_right(qtile):
+    index = qtile.groups.index(qtile.current_group)
+    if index < len(qtile.groups):
+        group_on_the_right = qtile.groups[index + 1]
+        qtile.switch_groups(qtile.current_group.name, group_on_the_right.name)
+
+@lazy.function
 def new_project_group_prompt(qtile):
     def add_project_group(text):
         qtile.addgroup(group=text)
         qtile.spawn(f"qtile cmd-obj -o group {text} -f toscreen")
-        qtile.spawn(f"""alacritty --hold --command ''bash -c 'eval "$(zoxide init bash)";z {text};hx'''""", shell = True)
+        qtile.spawn(f"""alacritty --hold --command ''bash -c 'eval "$(zoxide init bash)";z {text};nix develop --command hx'''""", shell = True)
         qtile.spawn(f"""alacritty --hold --command ''bash -c 'eval "$(zoxide init bash)";z {text};pwd;bash'''""", shell = True)
         qtile.spawn(f"""alacritty --hold --command ''bash -c 'eval "$(zoxide init bash)";z {text};lazygit'''""", shell = True)
 
@@ -112,6 +126,8 @@ keys = [
     Key([mod, "Shift"], 'l', lazy.prev_screen(), desc='Previous monitor'),
     Key([mod, "Shift"], 'k', lazy.screen.next_group(), desc='Next group'),
     Key([mod, "Shift"], 'j', lazy.screen.prev_group(), desc='Previous group'),
+    Key([mod, "Shift", "mod4"], 'j', move_group_left, desc='Move group to the left'),
+    Key([mod, "Shift", "mod4"], 'k', move_group_right, desc='Move group to the right'),
     Key([mod], "v", lazy.switchgroup(prompt="View group")),
     Key([mod], "m", lazy.togroup(prompt="Move to group")),
     Key([mod], "c", lazy.labelgroup(prompt="Change group name")),
