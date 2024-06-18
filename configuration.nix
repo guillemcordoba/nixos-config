@@ -5,14 +5,14 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -52,7 +52,7 @@
   # Configure keymap in X11
   services.xserver = {
     enable = true;
-    videoDrivers = ["nvidia"];
+    videoDrivers = [ "nvidia" ];
     # keyboard
     xkb = {
       layout = "es";
@@ -60,9 +60,7 @@
     };
     windowManager.qtile = {
       enable = true;
-      extraPackages = python3Packages: with python3Packages; [
-        qtile-extras
-      ];
+      extraPackages = python3Packages: with python3Packages; [ qtile-extras ];
     };
     displayManager.lightdm.enable = true;
   };
@@ -74,7 +72,7 @@
   users.users.guillem = {
     isNormalUser = true;
     description = "guillem";
-    extraGroups = [ "networkmanager" "wheel" "audio" "docker"];
+    extraGroups = [ "networkmanager" "wheel" "audio" "docker" "dialout" ];
   };
 
   # Allow unfree packages
@@ -84,7 +82,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     xorg.xrandr
     autorandr
@@ -98,14 +96,13 @@
     appimage-run
     unzip
     xsel
-    transmission_4-gtk 
+    transmission_4-gtk
     zulu8
     nixfmt
   ];
 
-  fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
-  ];
+  fonts.packages = with pkgs;
+    [ (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; }) ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -144,9 +141,9 @@
 
   nix = {
     settings = {
-      experimental-features = ["nix-command" "flakes"];
+      experimental-features = [ "nix-command" "flakes" ];
 
-      trusted-users = ["root" "guillem"];
+      trusted-users = [ "root" "guillem" ];
     };
   };
 }
