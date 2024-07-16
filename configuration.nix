@@ -98,7 +98,7 @@
     xsel
     transmission_4-gtk
     zulu8
-    nixfmt
+    nixfmt-classic
   ];
 
   fonts.packages = with pkgs;
@@ -116,6 +116,17 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  services.avahi = {
+    nssmdns4 = true;
+    enable = true;
+    ipv4 = true;
+    ipv6 = true;
+    publish = {
+      enable = true;
+      addresses = true;
+      workstation = true;
+    };
+  };
 
   # services.transmission = {
   #   enable = true;
