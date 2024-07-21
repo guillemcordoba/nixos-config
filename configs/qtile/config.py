@@ -287,8 +287,8 @@ secondary_screen = Screen(
 )
 
 screens = [
+    main_screen,
     secondary_screen,
-    main_screen
 ]
 
 # Drag floating layouts.
