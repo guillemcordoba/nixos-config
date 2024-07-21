@@ -10,25 +10,24 @@
     # Valid values: "DESKTOP" or "LAPTOP"
     DEVICE_TYPE = "DESKTOP";
   };
-  
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
+
+  boot.initrd.availableKernelModules =
+    [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/23d63289-3273-40cb-9a45-1d00a6ecd17b";
-      fsType = "ext4";
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/23d63289-3273-40cb-9a45-1d00a6ecd17b";
+    fsType = "ext4";
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/FB97-70F3";
-      fsType = "vfat";
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/FB97-70F3";
+    fsType = "vfat";
+  };
 
   swapDevices = [ ];
 
@@ -41,7 +40,8 @@
   # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.intel.updateMicrocode =
+    lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   # sound.enable = true;
   security.rtkit.enable = true;
@@ -53,7 +53,7 @@
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
   };
-  
+
   # bluetooth CLI
   # Example:
   # $ bluetoothctl
@@ -68,17 +68,16 @@
 
   hardware = {
     enableAllFirmware = true;
-    
+
     # pulseaudio = {
     #   enable = true;
     #   support32Bit = true;
     #   package = pkgs.pulseaudioFull;
     # };
-  
-    opengl = {
+
+    graphics = {
       enable = true;
-      driSupport = true;
-      driSupport32Bit = true;
+      enable32Bit = true;
     };
 
     nvidia = {
@@ -91,7 +90,7 @@
     };
 
     bluetooth = {
-      enable = true; # enables support for Bluetooth      
+      enable = true; # enables support for Bluetooth
       powerOnBoot = true; # powers up the default Bluetooth controller on boot
     };
   };
