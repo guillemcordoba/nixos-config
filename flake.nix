@@ -2,10 +2,10 @@
   description = "NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    helix.url = "github:helix-editor/helix";
+    helix.url = "github:helix-editor/helix/24.07";
   };
 
   outputs = inputs@{ nixpkgs, home-manager, ... }: {
