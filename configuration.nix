@@ -29,6 +29,8 @@
     enable = true;
     setSocketVariable = true;
   };
+  virtualisation.virtualbox.host.enable = true;
+  users.extraGroups.vboxusers.members = [ "guillem" ];
   # virtualisation.podman.enable = true;
 
   # Set your time zone.
@@ -127,6 +129,8 @@
       workstation = true;
     };
   };
+
+  services.udev.packages = with pkgs; [ vial via ];
 
   # services.transmission = {
   #   enable = true;
