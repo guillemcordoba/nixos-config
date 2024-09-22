@@ -29,6 +29,7 @@
     enable = true;
     setSocketVariable = true;
   };
+  virtualisation.virtualbox.host.enableExtensionPack = true;
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "guillem" ];
   # virtualisation.podman.enable = true;
@@ -101,7 +102,17 @@
     transmission_4-gtk
     zulu8
     nixfmt-classic
+    pass
   ];
+
+  programs.gnupg = {
+    agent = {
+      enable = true;
+      enableExtraSocket = true;
+      pinentryPackage = pkgs.pinentry-qt;
+    };
+  };
+  programs.browserpass.enable = true;
 
   fonts.packages = with pkgs;
     [ (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; }) ];
