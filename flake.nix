@@ -14,8 +14,8 @@
         system = "x86_64-linux";
         modules = [
           # To create bootable ISO images
-          (nixpkgs
-            + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix")
+          # (nixpkgs
+          #   + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix")
 
           ./configuration.nix
           home-manager.nixosModules.home-manager

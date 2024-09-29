@@ -65,7 +65,7 @@
       enable = true;
       extraPackages = python3Packages: with python3Packages; [ qtile-extras ];
     };
-    displayManager.lightdm.enable = true;
+    displayManager.gdm.enable = true;
   };
 
   # Configure console keymap
