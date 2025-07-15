@@ -11,8 +11,9 @@
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
+  boot.supportedFilesystems = [ "ntfs" ];
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" "armv7l-linux" ];
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -114,8 +115,10 @@
   };
   programs.browserpass.enable = true;
 
-  fonts.packages = with pkgs;
-    [ (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; }) ];
+  fonts.packages = with pkgs; [
+    nerd-fonts.fira-code
+    nerd-fonts.droid-sans-mono
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -130,14 +133,16 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services.avahi = {
-    nssmdns4 = true;
     enable = true;
+    nssmdns4 = true;
     ipv4 = true;
     ipv6 = true;
+    openFirewall = true;
     publish = {
       enable = true;
       addresses = true;
       workstation = true;
+      userServices = true;
     };
   };
 

@@ -81,7 +81,7 @@
           # show_milliseconds = false;
           # disabled = false;
           show_notifications = true;
-          min_time_to_notify = 15000;
+          min_time_to_notify = 5000;
         };
         nix_shell = { format = "[$symbol$name]($style) "; };
         rust = { format = "$symbol"; };

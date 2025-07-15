@@ -1,19 +1,28 @@
 theme = "dark_plus"
 
+[editor]
+cursorline = true
+lsp.display-inlay-hints = true
+bufferline = "always"
+auto-save = true
+# Minimum severity to show a diagnostic after the end of a line:
+end-of-line-diagnostics = "hint"
+
 [editor.soft-wrap]
 enable = true
 
 [editor.file-picker]
 hidden = false
 
-[editor]
-cursorline = true
-lsp.display-inlay-hints = true
-bufferline = "always"
-auto-save = true
-
 [editor.indent-guides]
 render = true
+
+[editor.inline-diagnostics]
+# Minimum severity to show a diagnostic on the primary cursor's line.
+# Note that `cursor-line` diagnostics are hidden in insert mode.
+cursor-line = "error"
+# Minimum severity to show a diagnostic on other lines:
+# other-lines = "error"
 
 [keys.insert]
 "C-h" = "move_char_left"

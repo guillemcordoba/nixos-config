@@ -2,10 +2,16 @@
   description = "NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
-    home-manager.url = "github:nix-community/home-manager/release-24.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    helix.url = "github:helix-editor/helix/24.07";
+    helix.url = "github:helix-editor/helix/25.01";
+  };
+
+  nixConfig = {
+    extra-substituters = [ "https://helix.cachix.org" ];
+    extra-trusted-public-keys =
+      [ "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs=" ];
   };
 
   outputs = inputs@{ nixpkgs, home-manager, ... }: {
