@@ -5,6 +5,7 @@ cursorline = true
 lsp.display-inlay-hints = true
 bufferline = "always"
 auto-save = true
+auto-format = true
 # Minimum severity to show a diagnostic after the end of a line:
 end-of-line-diagnostics = "hint"
 
@@ -30,3 +31,6 @@ cursor-line = "error"
 "C-j" = "move_line_down"
 "C-k" = "move_line_up"
 # "Alt-o" = ""
+
+[keys.normal.space.space]
+# f = "file_browser"

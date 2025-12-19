@@ -105,6 +105,11 @@
     zulu8
     nixfmt-classic
     pass
+    logseq
+
+    nodePackages."svelte-language-server"
+    # nodePackages."typescript-svelte-plugin"
+    jdt-language-server
   ];
 
   programs.gnupg = {

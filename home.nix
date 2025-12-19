@@ -95,13 +95,15 @@
       shellAliases = {
         cd = "z";
         lg = "lazygit";
+        nr = "nix run nixpkgs#";
+        ns = "nix shell nixpkgs#";
       };
 
       initExtra = ''
-                eval "$(starship init bash)"
-                eval "$(zoxide init bash)"
-                export DIRENV_LOG_FORMAT=
-        			'';
+        eval "$(starship init bash)"
+        eval "$(zoxide init bash)"
+        export DIRENV_LOG_FORMAT=
+			'';
     };
 
     git = {
@@ -122,5 +124,7 @@
       enable = true;
       defaultCacheTtl = 1800;
     };
+
+    flameshot.enable = true;
   };
 }

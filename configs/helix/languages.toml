@@ -45,3 +45,7 @@ name = "typescript"
 formatter = { command = 'npx', args = ["prettier", "--parser", "typescript"] }
 auto-format = true
 indent = { tab-width = 2, unit = "\t" }
+
+[[language]]
+name = "svelte"
+language-servers = [ "svelteserver" ]
