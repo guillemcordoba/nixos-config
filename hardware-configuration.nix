@@ -8,7 +8,7 @@
   environment.sessionVariables = {
     # Global env var to be able to have the same config accross different types of machines
     # Valid values: "DESKTOP" or "LAPTOP"
-    DEVICE_TYPE = "DESKTOP";
+    DEVICE_TYPE = "LAPTOP";
   };
 
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
@@ -20,13 +20,14 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/23d63289-3273-40cb-9a45-1d00a6ecd17b";
+    device = "/dev/disk/by-uuid/01f54cb8-9283-4e7b-8357-b8f033bcdc46";
     fsType = "ext4";
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/FB97-70F3";
+    device = "/dev/disk/by-uuid/A5D0-9A60";
     fsType = "vfat";
+    options = [ "fmask=0022" "dmask=0022" ];
   };
 
   swapDevices = [ ];
