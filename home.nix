@@ -137,4 +137,6 @@
     };
   };
 
+  carapace.enable = true;
+
 }
