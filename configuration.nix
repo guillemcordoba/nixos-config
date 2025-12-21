@@ -110,6 +110,8 @@
     nodePackages."svelte-language-server"
     # nodePackages."typescript-svelte-plugin"
     jdt-language-server
+    just
+    dua
   ];
 
   programs.gnupg = {
