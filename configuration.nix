@@ -58,7 +58,7 @@
   services.displayManager.gdm.enable = true;
   services.xserver = {
     enable = true;
-    videoDrivers = [ "nvidia" ];
+    # videoDrivers = [ "nvidia" ];
     # keyboard
     xkb = {
       layout = "es";
