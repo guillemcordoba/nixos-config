@@ -54,7 +54,8 @@
     LC_TIME = "es_ES.UTF-8";
   };
 
-  # Configure keymap in X11
+  # Configure X11
+  services.displayManager.gdm.enable = true;
   services.xserver = {
     enable = true;
     videoDrivers = [ "nvidia" ];
@@ -67,7 +68,6 @@
       enable = true;
       extraPackages = python3Packages: with python3Packages; [ qtile-extras ];
     };
-    displayManager.gdm.enable = true;
   };
 
   # Configure console keymap
