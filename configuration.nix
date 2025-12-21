@@ -112,6 +112,7 @@
     jdt-language-server
     just
     dua
+    claude-code
   ];
 
   programs.gnupg = {
