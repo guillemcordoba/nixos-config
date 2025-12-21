@@ -108,10 +108,11 @@
 
     git = {
       enable = true;
-      userName = "guillem.cordoba";
-      userEmail = "guillem.cordoba@gmail.com";
-
-      extraConfig = {
+      settings = {
+        user = {
+          name = "guillem.cordoba";
+          email = "guillem.cordoba@gmail.com";
+        };
         init.defaultBranch = "main";
         push = { autoSetupRemote = true; };
         core.editor = "hx";
