@@ -52,6 +52,7 @@
         nix run nixpkgs#"$@"
       '')
       nix-flamegraph
+      libnotify
     ];
 
     sessionVariables = { EDITOR = "hx"; };
@@ -120,6 +121,7 @@
     };
     lazygit.enable = true;
   };
+  services.dunst.enable = true;
   services = {
     gpg-agent = {
       enable = true;
@@ -136,6 +138,7 @@
       # sync_address = "https://api.atuin.sh";
       search_mode = "fuzzy";
     };
+    flags = [ "--disable-up-arrow" ];
   };
 
   programs.carapace.enable = true;
