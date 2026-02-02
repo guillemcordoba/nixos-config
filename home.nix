@@ -38,6 +38,7 @@
     in with pkgs; [
       inputs.helix.outputs.packages.${system}.default
       # helix
+      zed-editor
       discord
       spotify
       signal-desktop
@@ -46,7 +47,7 @@
       firefox
       rust-analyzer
       nodePackages.typescript-language-server
-      nodejs_20
+      nodejs_22
       peek
       (pkgs.writeShellScriptBin "nr" ''
         nix run nixpkgs#"$@"
@@ -60,6 +61,7 @@
     file.".config/qtile".source = ./configs/qtile;
     file.".config/alacritty".source = ./configs/alacritty;
     file.".config/helix".source = ./configs/helix;
+    file.".config/zed".source = ./configs/zed;
   };
 
   programs = {
