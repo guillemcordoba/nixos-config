@@ -98,6 +98,7 @@
         lg = "lazygit";
         nr = "nix run nixpkgs#";
         ns = "nix shell nixpkgs#";
+        j = "just";
       };
 
       initExtra = ''
