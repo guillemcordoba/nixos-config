@@ -86,7 +86,7 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = (with pkgs; [
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     xorg.xrandr
@@ -113,7 +113,13 @@
     just
     dua
     claude-code
-  ];
+    gh
+  ]);
+
+  xdg.portal.enable = true;
+  xdg.portal.config.common.default = "*";
+  # environment.pathsToLink =
+  #   [ "/share/xdg-desktop-portal" "/share/applications" ];
 
   programs.gnupg = {
     agent = {
@@ -156,6 +162,8 @@
   };
 
   services.udev.packages = with pkgs; [ vial via ];
+
+  services.flatpak.enable = true;
 
   # services.transmission = {
   #   enable = true;

@@ -38,6 +38,7 @@
     in with pkgs; [
       inputs.helix.outputs.packages.${system}.default
       # helix
+      zed-editor
       discord
       spotify
       signal-desktop
@@ -46,12 +47,13 @@
       firefox
       rust-analyzer
       nodePackages.typescript-language-server
-      nodejs_20
+      nodejs_22
       peek
       (pkgs.writeShellScriptBin "nr" ''
         nix run nixpkgs#"$@"
       '')
       nix-flamegraph
+      libnotify
     ];
 
     sessionVariables = { EDITOR = "hx"; };
@@ -59,6 +61,7 @@
     file.".config/qtile".source = ./configs/qtile;
     file.".config/alacritty".source = ./configs/alacritty;
     file.".config/helix".source = ./configs/helix;
+    file.".config/zed".source = ./configs/zed;
   };
 
   programs = {
@@ -97,6 +100,7 @@
         lg = "lazygit";
         nr = "nix run nixpkgs#";
         ns = "nix shell nixpkgs#";
+        j = "just";
       };
 
       initExtra = ''
@@ -120,6 +124,7 @@
     };
     lazygit.enable = true;
   };
+  services.dunst.enable = true;
   services = {
     gpg-agent = {
       enable = true;
@@ -136,6 +141,7 @@
       # sync_address = "https://api.atuin.sh";
       search_mode = "fuzzy";
     };
+    flags = [ "--disable-up-arrow" ];
   };
 
   programs.carapace.enable = true;
