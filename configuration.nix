@@ -30,8 +30,8 @@
     enable = true;
     setSocketVariable = true;
   };
-  virtualisation.virtualbox.host.enableExtensionPack = true;
-  virtualisation.virtualbox.host.enable = true;
+  # virtualisation.virtualbox.host.enableExtensionPack = true;
+  # virtualisation.virtualbox.host.enable = true;
 
   users.extraGroups.vboxusers.members = [ "guillem" ];
   # virtualisation.podman.enable = true;
@@ -113,9 +113,7 @@
     just
     dua
     gh
-  ]) ++ [
-    pkgs-unstable.claude-code
-  ];
+  ]) ++ [ pkgs-unstable.claude-code ];
 
   xdg.portal.enable = true;
   xdg.portal.config.common.default = "*";
