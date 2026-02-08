@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
-    nixpkgs-master.url = "github:nixos/nixpkgs/master";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     helix.url = "github:helix-editor/helix/25.07";
@@ -24,6 +24,12 @@
     nixosConfigurations = {
       guillem = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
+        specialArgs = {
+          pkgs-unstable = import inputs.nixpkgs-unstable {
+            inherit system;
+            config.allowUnfree = true;
+          };
+        };
         modules = [
           # To create bootable ISO images
           # (nixpkgs
@@ -39,12 +45,6 @@
 
             # Optionally, use home-manager.extraSpecialArgs to pass
             # arguments to home.nix
-          }
-          {
-
-            environment.systemPackages = [
-              inputs.nixpkgs-master.outputs.legacyPackages.${system}.claude-code
-            ];
           }
           ({ pkgs, ... }: {
             nixpkgs.overlays = [ inputs.rust-overlay.overlays.default ];

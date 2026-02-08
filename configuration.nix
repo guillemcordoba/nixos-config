@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, pkgs-unstable, ... }:
 
 {
   imports = [ # Include the results of the hardware scan.
@@ -113,7 +113,9 @@
     just
     dua
     gh
-  ]);
+  ]) ++ [
+    pkgs-unstable.claude-code
+  ];
 
   xdg.portal.enable = true;
   xdg.portal.config.common.default = "*";
