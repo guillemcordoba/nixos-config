@@ -112,7 +112,6 @@
     jdt-language-server
     just
     dua
-    claude-code
     gh
   ]);
 

@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-master.url = "github:nixos/nixpkgs/master";
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     helix.url = "github:helix-editor/helix/25.07";
@@ -39,12 +40,20 @@
             # Optionally, use home-manager.extraSpecialArgs to pass
             # arguments to home.nix
           }
+          {
+
+            environment.systemPackages = [
+              inputs.nixpkgs-master.outputs.legacyPackages.${system}.claude-code
+            ];
+          }
           ({ pkgs, ... }: {
             nixpkgs.overlays = [ inputs.rust-overlay.overlays.default ];
-            environment.systemPackages =
-              [ (pkgs.rust-bin.stable.latest.default.override {
+            environment.systemPackages = [
+              (pkgs.rust-bin.stable.latest.default.override {
                 extensions = [ "rust-src" ];
-              }) pkgs.clang ];
+              })
+              pkgs.clang
+            ];
           })
 
         ];
