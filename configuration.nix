@@ -113,6 +113,7 @@
     just
     dua
     gh
+    bluetui
   ]) ++ [
     pkgs-unstable.claude-code
   ];
