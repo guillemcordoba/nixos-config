@@ -55,7 +55,12 @@
   };
 
   # Configure X11
-  services.displayManager.gdm.enable = true;
+  services.displayManager.gdm = {
+    enable = true;
+    wayland = true;
+  };
+  services.gnome.gnome-keyring.enable = true;
+
   services.xserver = {
     enable = true;
     videoDrivers = [ "nvidia" ];
@@ -64,10 +69,10 @@
       layout = "es";
       variant = "cat";
     };
-    windowManager.qtile = {
-      enable = true;
-      extraPackages = python3Packages: with python3Packages; [ qtile-extras ];
-    };
+    # windowManager.qtile = {
+    #   enable = true;
+    #   extraPackages = python3Packages: with python3Packages; [ qtile-extras ];
+    # };
   };
 
   # Configure console keymap
@@ -114,14 +119,18 @@
     dua
     gh
     bluetui
-  ]) ++ [
-    pkgs-unstable.claude-code
-  ];
+  ]) ++ [ pkgs-unstable.claude-code ];
 
   xdg.portal.enable = true;
   xdg.portal.config.common.default = "*";
-  # environment.pathsToLink =
-  #   [ "/share/xdg-desktop-portal" "/share/applications" ];
+  xdg.portal.xdgOpenUsePortal = true;
+
+  xdg.portal.extraPortals =
+    [ pkgs.xdg-desktop-portal-gtk ]; # Or xdg-desktop-portal-gtk
+  environment.pathsToLink =
+    [ "/share/xdg-desktop-portal" "/share/applications" ];
+  programs.xwayland.enable = true;
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   programs.gnupg = {
     agent = {
@@ -165,7 +174,7 @@
 
   services.udev.packages = with pkgs; [ vial via ];
 
-  services.flatpak.enable = true;
+  # services.flatpak.enable = true;
 
   # services.transmission = {
   #   enable = true;

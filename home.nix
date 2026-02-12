@@ -1,6 +1,33 @@
-{ config, pkgs, inputs, system, ... }:
+{ pkgs, inputs, system, ... }:
 
 {
+  imports = [
+    # inputs.niri.homeModules.niri
+    inputs.dms.homeModules.dank-material-shell
+    inputs.dms.homeModules.niri
+
+  ];
+  programs.dank-material-shell = {
+    enable = true;
+    dgop.package = inputs.dgop.packages.${pkgs.system}.default;
+
+    systemd = {
+      enable = true; # Systemd service for auto-start
+      restartIfChanged = true; # Auto-restart dms.service when dms-shell changes
+    };
+
+    # Core features
+    enableSystemMonitoring = true; # System monitoring widgets (dgop)
+    enableVPN = true; # VPN management widget
+    enableDynamicTheming = true; # Wallpaper-based theming (matugen)
+    enableAudioWavelength = true; # Audio visualizer (cava)
+    enableCalendarEvents = true; # Calendar integration (khal)
+    niri = {
+      enableKeybinds = true; # Sets static preset keybinds
+      enableSpawn = true; # Auto-start DMS with niri, if enabled
+    };
+  };
+
   home = {
     username = "guillem";
     homeDirectory = "/home/guillem";
@@ -53,17 +80,19 @@
         nix run nixpkgs#"$@"
       '')
       nix-flamegraph
-      libnotify
+      # libnotify
     ];
 
     sessionVariables = { EDITOR = "hx"; };
 
     file.".config/qtile".source = ./configs/qtile;
+    file.".config/niri".source = ./configs/niri;
     file.".config/alacritty".source = ./configs/alacritty;
     file.".config/helix".source = ./configs/helix;
     file.".config/zed".source = ./configs/zed;
   };
 
+  programs.niri.config = null;
   programs = {
 
     home-manager.enable = true;
@@ -124,7 +153,7 @@
     };
     lazygit.enable = true;
   };
-  services.dunst.enable = true;
+  # services.dunst.enable = true;
   services = {
     gpg-agent = {
       enable = true;
