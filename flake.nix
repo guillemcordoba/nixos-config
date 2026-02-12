@@ -11,7 +11,21 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    niri-unstable.url = "github:YaLTeR/niri";
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.niri-stable.follows = "niri-unstable";
+    };
+    dms = {
+      url = "github:AvengeMedia/DankMaterialShell/stable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
+    dgop = {
+      url = "github:AvengeMedia/dgop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   nixConfig = {
@@ -29,6 +43,7 @@
             inherit system;
             config.allowUnfree = true;
           };
+          inherit inputs;
         };
         modules = [
           # To create bootable ISO images
@@ -36,6 +51,8 @@
           #   + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix")
 
           ./configuration.nix
+          ./modules/niri.nix
+          ./modules/dankmaterialshell.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
