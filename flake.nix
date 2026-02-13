@@ -15,7 +15,6 @@
     niri = {
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
-      # inputs.niri-stable.follows = "niri-unstable";
     };
     dms = {
       url = "github:AvengeMedia/DankMaterialShell/stable";
