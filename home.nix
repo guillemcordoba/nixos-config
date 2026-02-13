@@ -62,6 +62,9 @@
         checkPhase = "";
       };
 
+      niri-spawn-workspace-daemon = pkgs.writeShellScriptBin "niri-spawn-workspace-daemon" ''
+        exec ${pkgs.python3}/bin/python3 ${./configs/niri/spawn-workspace-daemon.py}
+      '';
     in with pkgs; [
       inputs.helix.outputs.packages.${system}.default
       # helix
@@ -80,6 +83,7 @@
         nix run nixpkgs#"$@"
       '')
       nix-flamegraph
+      niri-spawn-workspace-daemon
       # libnotify
     ];
 
