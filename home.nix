@@ -91,6 +91,7 @@
     file.".config/helix".source = ./configs/helix;
     file.".config/zed".source = ./configs/zed;
     file.".claude/CLAUDE.md".source = ./configs/claude/CLAUDE.md;
+    file.".claude/settings.json".source = ./configs/claude/settings.json;
   };
 
   xdg = {
