@@ -131,6 +131,7 @@
     [ "/share/xdg-desktop-portal" "/share/applications" ];
   programs.xwayland.enable = true;
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  environment.sessionVariables.ELECTRON_OZONE_PLATFORM_HINT = "x11";
 
   programs.gnupg = {
     agent = {
@@ -171,6 +172,8 @@
       userServices = true;
     };
   };
+
+  services.upower.enable = true;
 
   services.udev.packages = with pkgs; [ vial via ];
 

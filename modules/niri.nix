@@ -5,14 +5,9 @@
   imports = [ inputs.niri.nixosModules.niri ];
 
   programs.niri.enable = true;
-  # environment.systemPackages = with pkgs; [
-  #   wl-clipboard
-  #   wayland-utils
-  #   libsecret
-  #   cage
-  #   gamescope
-  #   xwayland-satellite-unstable
-  # ];
+  environment.systemPackages = with pkgs; [
+    xwayland-satellite-unstable
+  ];
 
   # security.soteria.enable = true;
 

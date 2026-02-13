@@ -90,6 +90,7 @@
     file.".config/alacritty".source = ./configs/alacritty;
     file.".config/helix".source = ./configs/helix;
     file.".config/zed".source = ./configs/zed;
+    file.".claude/CLAUDE.md".source = ./configs/claude/CLAUDE.md;
   };
 
   programs.niri.config = null;
