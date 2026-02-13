@@ -93,6 +93,27 @@
     file.".claude/CLAUDE.md".source = ./configs/claude/CLAUDE.md;
   };
 
+  xdg = {
+    desktopEntries.chromium-new-window = {
+      name = "Chromium (New Window)";
+      exec = "chromium --new-window %u";
+      terminal = false;
+      mimeType = [
+        "text/html"
+        "x-scheme-handler/http"
+        "x-scheme-handler/https"
+      ];
+    };
+    mimeApps = {
+      enable = true;
+      defaultApplications = {
+        "text/html" = "chromium-new-window.desktop";
+        "x-scheme-handler/http" = "chromium-new-window.desktop";
+        "x-scheme-handler/https" = "chromium-new-window.desktop";
+      };
+    };
+  };
+
   programs.niri.config = null;
   programs = {
 
