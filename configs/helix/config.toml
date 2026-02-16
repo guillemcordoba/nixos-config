@@ -6,7 +6,6 @@ lsp.display-inlay-hints = true
 bufferline = "always"
 auto-save = true
 auto-format = true
-auto-reload = true
 # Minimum severity to show a diagnostic after the end of a line:
 end-of-line-diagnostics = "hint"
 
