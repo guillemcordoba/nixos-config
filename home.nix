@@ -88,6 +88,7 @@
       nix-flamegraph
       niri-spawn-workspace-daemon
       libnotify
+      wl-clipboard
     ];
 
     sessionVariables = { EDITOR = "hx"; };
