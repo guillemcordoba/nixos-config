@@ -62,9 +62,12 @@
         checkPhase = "";
       };
 
-      niri-spawn-workspace-daemon = pkgs.writeShellScriptBin "niri-spawn-workspace-daemon" ''
-        exec ${pkgs.python3}/bin/python3 ${./configs/niri/spawn-workspace-daemon.py}
-      '';
+      niri-spawn-workspace-daemon =
+        pkgs.writeShellScriptBin "niri-spawn-workspace-daemon" ''
+          exec ${pkgs.python3}/bin/python3 ${
+            ./configs/niri/spawn-workspace-daemon.py
+          }
+        '';
     in with pkgs; [
       inputs.helix.outputs.packages.${system}.default
       # helix
@@ -85,6 +88,7 @@
       nix-flamegraph
       niri-spawn-workspace-daemon
       libnotify
+      wl-clipboard
     ];
 
     sessionVariables = { EDITOR = "hx"; };
@@ -103,11 +107,8 @@
       name = "Chromium (New Window)";
       exec = "chromium --new-window %u";
       terminal = false;
-      mimeType = [
-        "text/html"
-        "x-scheme-handler/http"
-        "x-scheme-handler/https"
-      ];
+      mimeType =
+        [ "text/html" "x-scheme-handler/http" "x-scheme-handler/https" ];
     };
     mimeApps = {
       enable = true;
@@ -187,7 +188,15 @@
       defaultCacheTtl = 1800;
     };
 
-    flameshot.enable = true;
+    flameshot = {
+      enable = true;
+      settings = {
+        General = {
+          useGrimAdapter = true;
+        };
+      };
+    };
+
   };
   programs.atuin = {
     enable = true;

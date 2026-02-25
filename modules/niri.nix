@@ -9,7 +9,7 @@
     xwayland-satellite-unstable
   ];
 
-  # security.soteria.enable = true;
+  security.soteria.enable = true;
 
   # programs.niri.settings = {
   #   input.keyboard.xkb.layout = "no";

@@ -123,10 +123,13 @@
 
   xdg.portal.enable = true;
   xdg.portal.config.common.default = "*";
+  xdg.portal.config.niri.default = [ "gnome" "gtk" ];
   xdg.portal.xdgOpenUsePortal = true;
 
-  xdg.portal.extraPortals =
-    [ pkgs.xdg-desktop-portal-gtk ]; # Or xdg-desktop-portal-gtk
+  xdg.portal.extraPortals = [
+    pkgs.xdg-desktop-portal-gtk
+    pkgs.xdg-desktop-portal-gnome
+  ];
   environment.pathsToLink =
     [ "/share/xdg-desktop-portal" "/share/applications" ];
   programs.xwayland.enable = true;
