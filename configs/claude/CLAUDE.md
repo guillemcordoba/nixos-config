@@ -4,12 +4,8 @@ This machine runs NixOS. Follow these rules strictly:
 
 ## Running commands in projects
 
-- Before running any project command, check for a `flake.nix` in the project root.
-- If a `flake.nix` exists, **always** prefix commands with `nix develop --command` to run them inside the default devShell. For example:
-  - `nix develop --command cargo build` instead of `cargo build`
-  - `nix develop --command python main.py` instead of `python main.py`
-  - `nix develop --command npm install` instead of `npm install`
-- If the project has no `flake.nix`, check parent directories or proceed normally.
+- Claude Code is always launched from within a `nix develop` shell. You do **not** need to prefix commands with `nix develop --command` when running them in the current project — just run them directly (e.g. `cargo build`, `python main.py`, `npm install`).
+- If you need to run commands in a **different** project that has its own `flake.nix`, prefix with `nix develop /path/to/project --command` to enter that project's devShell.
 
 ## Installing packages
 
