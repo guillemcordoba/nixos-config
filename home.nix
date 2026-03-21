@@ -5,7 +5,7 @@
     # inputs.niri.homeModules.niri
     inputs.dms.homeModules.dank-material-shell
     inputs.dms.homeModules.niri
-
+    inputs.claude-for-linux.homeManagerModules.default
   ];
   programs.dank-material-shell = {
     enable = true;
@@ -210,5 +210,10 @@
   };
 
   programs.carapace.enable = true;
+
+  programs.claude-desktop = {
+    enable = true;
+    fhs = true;
+  };
 
 }

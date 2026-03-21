@@ -25,6 +25,11 @@
       url = "github:AvengeMedia/dgop";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    claude-for-linux = {
+      url = "github:heytcass/claude-for-linux";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   nixConfig = {
