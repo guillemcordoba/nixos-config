@@ -1,11 +1,10 @@
-{ pkgs, inputs, system, ... }:
+{ pkgs, lib, inputs, system, ... }:
 
 {
   imports = [
     # inputs.niri.homeModules.niri
     inputs.dms.homeModules.dank-material-shell
     inputs.dms.homeModules.niri
-    inputs.claude-for-linux.homeManagerModules.default
   ];
   programs.dank-material-shell = {
     enable = true;
@@ -70,6 +69,7 @@
         '';
     in with pkgs; [
       inputs.helix.outputs.packages.${system}.default
+      claude-desktop
       # helix
       zed-editor
       discord
@@ -89,17 +89,21 @@
       niri-spawn-workspace-daemon
       libnotify
       wl-clipboard
+      sox
     ];
 
     sessionVariables = { EDITOR = "hx"; };
 
     file.".config/qtile".source = ./configs/qtile;
+    file."Pictures/wallpaper.jpg".source = ./configs/qtile/wallpaper.jpg;
     file.".config/niri".source = ./configs/niri;
     file.".config/alacritty".source = ./configs/alacritty;
     file.".config/helix".source = ./configs/helix;
     file.".config/zed".source = ./configs/zed;
     file.".claude/CLAUDE.md".source = ./configs/claude/CLAUDE.md;
-    file.".claude/settings.json".source = ./configs/claude/settings.json;
+    # settings.json is merged (not symlinked) so Claude can write to it (e.g. voice mode)
+    file.".claude/managed-settings.json".source =
+      ./configs/claude/settings.json;
   };
 
   xdg = {
@@ -181,6 +185,7 @@
     };
     lazygit.enable = true;
   };
+
   # services.dunst.enable = true;
   services = {
     gpg-agent = {
@@ -190,11 +195,7 @@
 
     flameshot = {
       enable = true;
-      settings = {
-        General = {
-          useGrimAdapter = true;
-        };
-      };
+      settings = { General = { useGrimAdapter = true; }; };
     };
 
   };
@@ -211,9 +212,61 @@
 
   programs.carapace.enable = true;
 
-  programs.claude-desktop = {
-    enable = true;
-    fhs = true;
-  };
+  home.activation.mergeClaudeSettings =
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      MANAGED="$HOME/.claude/managed-settings.json"
+      SETTINGS="$HOME/.claude/settings.json"
+      if [ -f "$MANAGED" ]; then
+        if [ -f "$SETTINGS" ]; then
+          # Merge: managed settings take priority, user-added keys are preserved
+          ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$SETTINGS" "$MANAGED" > "$SETTINGS.tmp"
+          mv "$SETTINGS.tmp" "$SETTINGS"
+        else
+          cp "$MANAGED" "$SETTINGS"
+        fi
+      fi
+    '';
+
+  home.activation.seedDmsDefaults = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    STATE_DIR="$HOME/.local/state/DankMaterialShell"
+    SESSION_FILE="$STATE_DIR/session.json"
+    WALLPAPER="$HOME/Pictures/wallpaper.jpg"
+    mkdir -p "$STATE_DIR"
+    if [ ! -f "$SESSION_FILE" ]; then
+      cat > "$SESSION_FILE" << EOF
+    {
+      "wallpaperPath": "$WALLPAPER",
+      "wallpaperFillMode": "Fill",
+      "wallpaperTransition": "fade",
+      "perMonitorWallpaper": false,
+      "perModeWallpaper": false,
+      "wallpaperCyclingEnabled": false
+    }
+    EOF
+    fi
+
+    CONFIG_DIR="$HOME/.config/DankMaterialShell"
+    SETTINGS_FILE="$CONFIG_DIR/settings.json"
+    mkdir -p "$CONFIG_DIR"
+    if [ ! -f "$SETTINGS_FILE" ]; then
+      cat > "$SETTINGS_FILE" << 'EOF'
+    {
+      "configVersion": 5,
+      "barConfigs": [
+        {
+          "id": "default",
+          "name": "Main Bar",
+          "enabled": true,
+          "screenPreferences": ["all"],
+          "showOnLastDisplay": true,
+          "leftWidgets": ["workspaceSwitcher", "focusedWindow"],
+          "centerWidgets": [],
+          "rightWidgets": ["systemTray", "cpuUsage", "memUsage", "battery", "clock", "controlCenterButton"],
+        }
+      ]
+    }
+    EOF
+    fi
+  '';
 
 }
