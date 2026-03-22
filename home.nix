@@ -262,6 +262,8 @@
           "leftWidgets": ["workspaceSwitcher", "focusedWindow"],
           "centerWidgets": [],
           "rightWidgets": ["systemTray", "cpuUsage", "memUsage", "battery", "clock", "controlCenterButton"],
+          "spacing": 0,
+          "squareCorners": true
         }
       ]
     }
