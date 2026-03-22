@@ -6,7 +6,7 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    helix.url = "github:helix-editor/helix/25.07";
+    helix.url = "github:helix-editor/helix";
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -26,10 +26,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    claude-for-linux = {
-      url = "github:heytcass/claude-for-linux";
+    claude-desktop = {
+      url = "github:aaddrick/claude-desktop-debian";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
   };
 
   nixConfig = {
@@ -68,7 +69,11 @@
             # arguments to home.nix
           }
           ({ pkgs, ... }: {
-            nixpkgs.overlays = [ inputs.rust-overlay.overlays.default ];
+            nixpkgs.overlays = [
+              inputs.rust-overlay.overlays.default
+              inputs.claude-desktop.overlays.default
+
+            ];
             environment.systemPackages = [
               (pkgs.rust-bin.stable.latest.default.override {
                 extensions = [ "rust-src" ];
