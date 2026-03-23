@@ -8,11 +8,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774021876,
-        "narHash": "sha256-X0dZAbSQ09ur+ewMSxlWyj8SVmmrJfQD5Am89KO17pc=",
+        "lastModified": 1774235690,
+        "narHash": "sha256-Pc5A9ahCnmoLDduLeUUv8Uy94aPyzyAvAsZqoB/qvP0=",
         "owner": "aaddrick",
         "repo": "claude-desktop-debian",
-        "rev": "dee729b873e8cdadc12f187bf9c39dd04c843e8f",
+        "rev": "0b021589e8f2a4f69f84f2e23b9ab11454935bc6",
         "type": "github"
       },
       "original": {
@@ -133,11 +133,11 @@
         "xwayland-satellite-unstable": "xwayland-satellite-unstable"
       },
       "locked": {
-        "lastModified": 1774113359,
-        "narHash": "sha256-b7/LsPn5uZoFNjGVQ26q+6QPf8Q9IHHmRx+rGLZ8oyY=",
+        "lastModified": 1774253924,
+        "narHash": "sha256-5Zi+RYoRvax1gATaNC80MYR+6uBJ3F+uUZ2KL3HyTWg=",
         "owner": "sodiboo",
         "repo": "niri-flake",
-        "rev": "1c4a800bbe0c4cbcf99529fd88286a14450261a8",
+        "rev": "36f3b7b93efde38c4c40daeaee80a62afb550812",
         "type": "github"
       },
       "original": {
@@ -378,11 +378,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774062094,
-        "narHash": "sha256-ba3c+hS7KzEiwtZRGHagIAYdcmdY3rCSWVCyn64rx7s=",
+        "lastModified": 1774235565,
+        "narHash": "sha256-D8OOwvq3zDDCtIhMcNueb9tGSZaZUanKpWDleRgQ80U=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "c807e83cc2e32adc35f51138b3bdef722c0812ab",
+        "rev": "dc00324a2438762582b49954373112b8eab29cab",
         "type": "github"
       },
       "original": {
