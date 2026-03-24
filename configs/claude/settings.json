@@ -11,7 +11,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 -c \"import sys,json,subprocess;d=json.load(sys.stdin);proj=d.get('cwd','').rsplit('/',1)[-1];title=d.get('title','Claude Code');subprocess.run(['notify-send',f'Claude Code [{proj}]',d.get('message','Needs your attention')])\""
+            "command": "input=$(cat) && msg=$(echo \"$input\" | grep -oP '\"message\"\\s*:\\s*\"\\K[^\"]*') && cwd=$(echo \"$input\" | grep -oP '\"cwd\"\\s*:\\s*\"\\K[^\"]*') && proj=${cwd##*/} && notify-send \"Claude Code [${proj:-unknown}]\" \"${msg:-Needs your attention}\""
           }
         ]
       }

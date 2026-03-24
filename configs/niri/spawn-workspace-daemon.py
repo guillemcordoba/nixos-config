@@ -76,6 +76,7 @@ def main():
     windows = {}  # window_id -> {pid, workspace_id}
     pid_to_window = {}  # pid -> window_id
     workspaces = {}  # workspace_id -> {idx, output}
+    focused_window_id = None  # track the currently focused window
 
     def update_workspaces(ws_list):
         workspaces.clear()
@@ -129,6 +130,11 @@ def main():
             elif "WorkspacesChanged" in event:
                 update_workspaces(event["WorkspacesChanged"]["workspaces"])
 
+            elif "WindowFocusChanged" in event:
+                new_focus = event["WindowFocusChanged"].get("id")
+                if new_focus is not None:
+                    focused_window_id = new_focus
+
             elif "WindowOpenedOrChanged" in event:
                 window = event["WindowOpenedOrChanged"]["window"]
                 wid = window["id"]
@@ -173,6 +179,9 @@ def main():
                     f"ancestor id={ancestor_wid} ws={ancestor_ws_id} output={target_output} idx={target_idx}, "
                     f"current ws={new_ws_id} output={current_output}")
 
+                # Remember the previously focused window to restore focus after the move
+                prev_focused = focused_window_id if focused_window_id != wid else None
+
                 # Move to correct monitor first if needed
                 if target_output and current_output and target_output != current_output:
                     log(f"  moving to monitor {target_output}")
@@ -186,6 +195,11 @@ def main():
                     "--focus", "false",
                     str(target_idx),
                 )
+
+                # Restore focus to the previously focused window
+                if prev_focused and prev_focused in windows:
+                    log(f"  restoring focus to window id={prev_focused}")
+                    niri_action("focus-window", "--id", str(prev_focused))
 
             elif "WindowClosed" in event:
                 closed_id = event["WindowClosed"]["id"]
