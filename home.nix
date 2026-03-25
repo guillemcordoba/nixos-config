@@ -90,6 +90,7 @@
       libnotify
       wl-clipboard
       sox
+      nautilus
     ];
 
     sessionVariables = { EDITOR = "hx"; };
@@ -232,8 +233,7 @@
     SESSION_FILE="$STATE_DIR/session.json"
     WALLPAPER="$HOME/Pictures/wallpaper.jpg"
     mkdir -p "$STATE_DIR"
-    if [ ! -f "$SESSION_FILE" ]; then
-      cat > "$SESSION_FILE" << EOF
+    MANAGED=$(cat << EOF
     {
       "wallpaperPath": "$WALLPAPER",
       "wallpaperFillMode": "Fill",
@@ -243,13 +243,18 @@
       "wallpaperCyclingEnabled": false
     }
     EOF
+    )
+    if [ -f "$SESSION_FILE" ]; then
+      ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$SESSION_FILE" <(echo "$MANAGED") > "$SESSION_FILE.tmp"
+      mv "$SESSION_FILE.tmp" "$SESSION_FILE"
+    else
+      echo "$MANAGED" > "$SESSION_FILE"
     fi
 
     CONFIG_DIR="$HOME/.config/DankMaterialShell"
     SETTINGS_FILE="$CONFIG_DIR/settings.json"
     mkdir -p "$CONFIG_DIR"
-    if [ ! -f "$SETTINGS_FILE" ]; then
-      cat > "$SETTINGS_FILE" << 'EOF'
+    MANAGED_SETTINGS=$(cat << 'EOF'
     {
       "configVersion": 5,
       "barConfigs": [
@@ -268,6 +273,12 @@
       ]
     }
     EOF
+    )
+    if [ -f "$SETTINGS_FILE" ]; then
+      ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$SETTINGS_FILE" <(echo "$MANAGED_SETTINGS") > "$SETTINGS_FILE.tmp"
+      mv "$SETTINGS_FILE.tmp" "$SETTINGS_FILE"
+    else
+      echo "$MANAGED_SETTINGS" > "$SETTINGS_FILE"
     fi
   '';
 
