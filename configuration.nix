@@ -124,17 +124,27 @@
   xdg.portal.enable = true;
   xdg.portal.config.common.default = "*";
   xdg.portal.config.niri.default = [ "gnome" "gtk" ];
+  xdg.portal.config.niri."org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
+  xdg.portal.config.niri."org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
   xdg.portal.xdgOpenUsePortal = true;
 
   xdg.portal.extraPortals = [
     pkgs.xdg-desktop-portal-gtk
     pkgs.xdg-desktop-portal-gnome
+    pkgs.xdg-desktop-portal-wlr
   ];
   environment.pathsToLink =
     [ "/share/xdg-desktop-portal" "/share/applications" ];
   programs.xwayland.enable = true;
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
-  environment.sessionVariables.ELECTRON_OZONE_PLATFORM_HINT = "x11";
+  environment.sessionVariables.ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+  environment.sessionVariables.XDG_CURRENT_DESKTOP = "gnome";
+  environment.sessionVariables.XDG_SESSION_TYPE = "wayland";
+
+  # Zoom looks for xdg-desktop-portal at hardcoded FHS paths
+  systemd.tmpfiles.rules = [
+    "L+ /usr/libexec/xdg-desktop-portal - - - - ${pkgs.xdg-desktop-portal}/libexec/xdg-desktop-portal"
+  ];
 
   programs.gnupg = {
     agent = {

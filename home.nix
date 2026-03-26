@@ -282,4 +282,12 @@
     fi
   '';
 
+  # Zoom manages its own config file — a symlink would break it.
+  # Merge our setting into the existing file so Zoom can still read/write it.
+  home.activation.zoomConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    ZOOM_CONF="$HOME/.config/zoomus.conf"
+    mkdir -p "$(dirname "$ZOOM_CONF")"
+    ${pkgs.crudini}/bin/crudini --set "$ZOOM_CONF" General enableWaylandShare true
+  '';
+
 }
