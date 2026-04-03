@@ -119,6 +119,7 @@
     dua
     gh
     bluetui
+    mold
   ]) ++ [ pkgs-unstable.claude-code ];
 
   xdg.portal.enable = true;
