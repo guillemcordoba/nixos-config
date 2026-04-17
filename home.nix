@@ -93,7 +93,16 @@
       nautilus
     ];
 
-    sessionVariables = { EDITOR = "hx"; };
+    sessionVariables = {
+      EDITOR = "hx";
+
+      # Faster rust compilation in laptop
+      CARGO_PROFILE_DEV_OPT_LEVEL = "0";
+      CARGO_PROFILE_DEV_CODEGEN_UNITS = "256";
+      CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER = "clang";
+      CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS =
+        "-C link-arg=-fuse-ld=mold";
+    };
 
     file.".config/qtile".source = ./configs/qtile;
     file."Pictures/wallpaper.jpg".source = ./configs/qtile/wallpaper.jpg;
