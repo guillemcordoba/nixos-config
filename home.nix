@@ -282,6 +282,10 @@
     fi
   '';
 
+  dconf.settings."org/gnome/desktop/interface" = {
+    color-scheme = "prefer-dark";
+  };
+
   # Zoom manages its own config file — a symlink would break it.
   # Merge our setting into the existing file so Zoom can still read/write it.
   home.activation.zoomConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
