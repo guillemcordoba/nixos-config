@@ -54,11 +54,7 @@
     LC_TIME = "es_ES.UTF-8";
   };
 
-  # Configure X11
-  services.displayManager.gdm = {
-    enable = true;
-    wayland = true;
-  };
+  services.displayManager.gdm.enable = true;
   services.gnome.gnome-keyring.enable = true;
 
   services.xserver = {
@@ -110,9 +106,8 @@
     zulu8
     nixfmt-classic
     pass
-    logseq
 
-    nodePackages."svelte-language-server"
+    svelte-language-server
     # nodePackages."typescript-svelte-plugin"
     jdt-language-server
     just

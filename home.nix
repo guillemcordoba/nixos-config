@@ -69,7 +69,6 @@
         '';
     in with pkgs; [
       inputs.helix.outputs.packages.${system}.default
-      claude-desktop
       # helix
       zed-editor
       discord
@@ -79,7 +78,7 @@
       chromium
       firefox
       rust-analyzer
-      nodePackages.typescript-language-server
+      typescript-language-server
       nodejs_22
       peek
       (pkgs.writeShellScriptBin "nr" ''
