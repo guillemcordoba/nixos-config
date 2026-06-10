@@ -54,11 +54,9 @@
     LC_TIME = "es_ES.UTF-8";
   };
 
-  # Configure X11
-  services.displayManager.gdm = {
-    enable = true;
-    wayland = true;
-  };
+  services.displayManager.gdm.enable = true;
+  # Workaround for nixpkgs#528521: GDM 50 falls back to gnome-session if unset.
+  services.displayManager.defaultSession = "niri";
   services.gnome.gnome-keyring.enable = true;
 
   services.xserver = {
@@ -94,7 +92,7 @@
   environment.systemPackages = (with pkgs; [
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
-    xorg.xrandr
+    xrandr
     autorandr
     alacritty
     cachix
@@ -108,11 +106,10 @@
     xsel
     transmission_4-gtk
     zulu8
-    nixfmt-classic
+    nixfmt
     pass
-    logseq
 
-    nodePackages."svelte-language-server"
+    svelte-language-server
     # nodePackages."typescript-svelte-plugin"
     jdt-language-server
     just

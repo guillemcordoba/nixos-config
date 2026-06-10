@@ -51,7 +51,7 @@ guides/                    # Personal reference notes (wifi, iso-image, virtualb
 - Display manager: GDM with Wayland
 - Docker enabled (rootless)
 - Flakes and nix-command experimental features enabled
-- Nix formatter: `nixfmt-classic`
+- Nix formatter: `nixfmt`
 - Fonts: Nerd Fonts (Fira Code, Droid Sans Mono)
 - Unfree packages allowed
 
@@ -90,7 +90,7 @@ nixfmt *.nix modules/*.nix
 
 ## Conventions When Editing
 
-- Nix files use 2-space indentation and are formatted with `nixfmt-classic` (available as `nixfmt` in the system packages via `nixfmt-classic`)
+- Nix files use 2-space indentation and are formatted with `nixfmt` (in `environment.systemPackages`)
 - System-wide packages go in `configuration.nix` `environment.systemPackages`
 - User/GUI packages go in `home.nix` `home.packages`
 - Packages from unstable channel use `pkgs-unstable.<pkg>` (passed via `specialArgs`)
