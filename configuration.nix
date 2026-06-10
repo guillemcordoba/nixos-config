@@ -55,6 +55,8 @@
   };
 
   services.displayManager.gdm.enable = true;
+  # Workaround for nixpkgs#528521: GDM 50 falls back to gnome-session if unset.
+  services.displayManager.defaultSession = "niri";
   services.gnome.gnome-keyring.enable = true;
 
   services.xserver = {
