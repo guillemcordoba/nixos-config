@@ -70,7 +70,6 @@
     in with pkgs; [
       inputs.helix.outputs.packages.${system}.default
       # helix
-      zed-editor
       discord
       spotify
       signal-desktop
@@ -94,12 +93,9 @@
 
     sessionVariables = { EDITOR = "hx"; };
 
-    file.".config/qtile".source = ./configs/qtile;
-    file."Pictures/wallpaper.jpg".source = ./configs/qtile/wallpaper.jpg;
     file.".config/niri".source = ./configs/niri;
     file.".config/alacritty".source = ./configs/alacritty;
     file.".config/helix".source = ./configs/helix;
-    file.".config/zed".source = ./configs/zed;
     file.".claude/CLAUDE.md".source = ./configs/claude/CLAUDE.md;
     # settings.json is merged (not symlinked) so Claude can write to it (e.g. voice mode)
     file.".claude/managed-settings.json".source =
@@ -226,60 +222,6 @@
         fi
       fi
     '';
-
-  home.activation.seedDmsDefaults = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    STATE_DIR="$HOME/.local/state/DankMaterialShell"
-    SESSION_FILE="$STATE_DIR/session.json"
-    WALLPAPER="$HOME/Pictures/wallpaper.jpg"
-    mkdir -p "$STATE_DIR"
-    MANAGED=$(cat << EOF
-    {
-      "wallpaperPath": "$WALLPAPER",
-      "wallpaperFillMode": "Fill",
-      "wallpaperTransition": "fade",
-      "perMonitorWallpaper": false,
-      "perModeWallpaper": false,
-      "wallpaperCyclingEnabled": false
-    }
-    EOF
-    )
-    if [ -f "$SESSION_FILE" ]; then
-      ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$SESSION_FILE" <(echo "$MANAGED") > "$SESSION_FILE.tmp"
-      mv "$SESSION_FILE.tmp" "$SESSION_FILE"
-    else
-      echo "$MANAGED" > "$SESSION_FILE"
-    fi
-
-    CONFIG_DIR="$HOME/.config/DankMaterialShell"
-    SETTINGS_FILE="$CONFIG_DIR/settings.json"
-    mkdir -p "$CONFIG_DIR"
-    MANAGED_SETTINGS=$(cat << 'EOF'
-    {
-      "configVersion": 5,
-      "barConfigs": [
-        {
-          "id": "default",
-          "name": "Main Bar",
-          "enabled": true,
-          "screenPreferences": ["all"],
-          "showOnLastDisplay": true,
-          "leftWidgets": ["workspaceSwitcher", "focusedWindow"],
-          "centerWidgets": [],
-          "rightWidgets": ["systemTray", "cpuUsage", "memUsage", "battery", "clock", "controlCenterButton"],
-          "spacing": 0,
-          "squareCorners": true
-        }
-      ]
-    }
-    EOF
-    )
-    if [ -f "$SETTINGS_FILE" ]; then
-      ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$SETTINGS_FILE" <(echo "$MANAGED_SETTINGS") > "$SETTINGS_FILE.tmp"
-      mv "$SETTINGS_FILE.tmp" "$SETTINGS_FILE"
-    else
-      echo "$MANAGED_SETTINGS" > "$SETTINGS_FILE"
-    fi
-  '';
 
   dconf.settings."org/gnome/desktop/interface" = {
     color-scheme = "prefer-dark";
