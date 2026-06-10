@@ -8,7 +8,7 @@
   ];
   programs.dank-material-shell = {
     enable = true;
-    dgop.package = inputs.dgop.packages.${pkgs.system}.default;
+    dgop.package = inputs.dgop.packages.${system}.default;
 
     systemd = {
       enable = true; # Systemd service for auto-start
@@ -24,6 +24,8 @@
     niri = {
       enableKeybinds = true; # Sets static preset keybinds
       enableSpawn = true; # Auto-start DMS with niri, if enabled
+      includes.enable =
+        false; # Niri config is managed manually via configs/niri/config.kdl
     };
   };
 

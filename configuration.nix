@@ -92,7 +92,7 @@
   environment.systemPackages = (with pkgs; [
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
-    xorg.xrandr
+    xrandr
     autorandr
     alacritty
     cachix
@@ -106,7 +106,7 @@
     xsel
     transmission_4-gtk
     zulu8
-    nixfmt-classic
+    nixfmt
     pass
 
     svelte-language-server
