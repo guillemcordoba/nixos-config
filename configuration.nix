@@ -175,6 +175,14 @@
   };
   programs.browserpass.enable = true;
 
+  # 1Password CLI (`op`) and desktop GUI. The polkit policy owner is
+  # required for system authentication, browser unlock, and the SSH agent.
+  programs._1password.enable = true;
+  programs._1password-gui = {
+    enable = true;
+    polkitPolicyOwners = [ "guillem" ];
+  };
+
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code
     nerd-fonts.droid-sans-mono
