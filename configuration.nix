@@ -242,6 +242,15 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
+  # Allow devices on any local/private network (e.g. phones on the LAN) to
+  # reach dev servers on arbitrary ports. Matches by source subnet rather than
+  # interface name so it is portable across machines (desktop/thinkpad/etc.).
+  networking.firewall.extraCommands = ''
+    iptables -A nixos-fw -s 192.168.0.0/16 -j nixos-fw-accept
+    iptables -A nixos-fw -s 10.0.0.0/8 -j nixos-fw-accept
+    iptables -A nixos-fw -s 172.16.0.0/12 -j nixos-fw-accept
+  '';
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
