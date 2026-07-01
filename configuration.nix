@@ -212,14 +212,13 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
-  # Allow devices on any local/private network (e.g. phones on the LAN) to
-  # reach dev servers on arbitrary ports. Matches by source subnet rather than
-  # interface name so it is portable across machines (desktop/thinkpad/etc.).
-  networking.firewall.extraCommands = ''
-    iptables -A nixos-fw -s 192.168.0.0/16 -j nixos-fw-accept
-    iptables -A nixos-fw -s 10.0.0.0/8 -j nixos-fw-accept
-    iptables -A nixos-fw -s 172.16.0.0/12 -j nixos-fw-accept
-  '';
+  # Personal dev machine: disable the firewall entirely. This also removes the
+  # strict reverse-path filter, which otherwise drops same-host packets sent to
+  # this machine's own LAN IP (e.g. two local p2p nodes dialing each other's
+  # iroh UDP port at 192.168.x.x — the looped-back packet arrives via `lo` but
+  # the source is routable via the ethernet interface, so strict rpfilter drops
+  # it in mangle PREROUTING). With the firewall off, that path is unfiltered.
+  networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
