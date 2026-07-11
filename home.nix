@@ -184,6 +184,7 @@
         lg = "lazygit";
         nr = "nix run nixpkgs#";
         ns = "nix shell nixpkgs#";
+        nd = "nix develop";
         j = "just";
       };
 
