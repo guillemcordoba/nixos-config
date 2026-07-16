@@ -100,6 +100,7 @@
         wl-clipboard
         sox
         nautilus
+        vial
       ];
 
     sessionVariables = {
