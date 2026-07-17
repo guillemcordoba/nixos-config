@@ -1,4 +1,10 @@
-{ pkgs, lib, inputs, system, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  system,
+  ...
+}:
 
 {
   imports = [
@@ -24,8 +30,7 @@
     niri = {
       enableKeybinds = true; # Sets static preset keybinds
       enableSpawn = true; # Auto-start DMS with niri, if enabled
-      includes.enable =
-        false; # Niri config is managed manually via configs/niri/config.kdl
+      includes.enable = false; # Niri config is managed manually via configs/niri/config.kdl
     };
   };
 
@@ -35,74 +40,79 @@
 
     stateVersion = "23.11";
 
-    packages = let
-      # https://discourse.nixos.org/t/nix-flamegraph-or-profiling-tool/33333
-      stackCollapse = pkgs.writeTextFile {
-        name = "stack-collapse.py";
-        destination = "/bin/stack-collapse.py";
-        text = builtins.readFile (builtins.fetchurl {
-          url =
-            "https://raw.githubusercontent.com/NixOS/nix/master/contrib/stack-collapse.py";
-          sha256 =
-            "sha256:0mi9cf3nx7xjxcrvll1hlkhmxiikjn0w95akvwxs50q270pafbjw";
-        });
-        executable = true;
-      };
-      nix-flamegraph = pkgs.writeShellApplication {
-        name = "nix-flamegraph";
-        runtimeInputs = [ stackCollapse pkgs.inferno pkgs.chromium ];
-        text = ''
-          #!/bin/bash
-          WORKDIR=$(mktemp -d)
+    packages =
+      let
+        # https://discourse.nixos.org/t/nix-flamegraph-or-profiling-tool/33333
+        stackCollapse = pkgs.writeTextFile {
+          name = "stack-collapse.py";
+          destination = "/bin/stack-collapse.py";
+          text = builtins.readFile (
+            builtins.fetchurl {
+              url = "https://raw.githubusercontent.com/NixOS/nix/master/contrib/stack-collapse.py";
+              sha256 = "sha256:0mi9cf3nx7xjxcrvll1hlkhmxiikjn0w95akvwxs50q270pafbjw";
+            }
+          );
+          executable = true;
+        };
+        nix-flamegraph = pkgs.writeShellApplication {
+          name = "nix-flamegraph";
+          runtimeInputs = [
+            stackCollapse
+            pkgs.inferno
+            pkgs.chromium
+          ];
+          text = ''
+            #!/bin/bash
+            WORKDIR=$(mktemp -d)
 
-          nix eval -vvvvvvvvvvvvvvvvvvvv --raw --option trace-function-calls true $1 1>/dev/null 2> $WORKDIR/nix-function-calls.trace
-          stack-collapse.py $WORKDIR/nix-function-calls.trace > $WORKDIR/nix-function-calls.folded
-          inferno-flamegraph $WORKDIR/nix-function-calls.folded > $WORKDIR/nix-function-calls-$1.svg
-          chromium "$WORKDIR/nix-function-calls-$1.svg"
+            nix eval -vvvvvvvvvvvvvvvvvvvv --raw --option trace-function-calls true $1 1>/dev/null 2> $WORKDIR/nix-function-calls.trace
+            stack-collapse.py $WORKDIR/nix-function-calls.trace > $WORKDIR/nix-function-calls.folded
+            inferno-flamegraph $WORKDIR/nix-function-calls.folded > $WORKDIR/nix-function-calls-$1.svg
+            chromium "$WORKDIR/nix-function-calls-$1.svg"
+          '';
+          checkPhase = "";
+        };
+
+        niri-spawn-workspace-daemon = pkgs.writeShellScriptBin "niri-spawn-workspace-daemon" ''
+          exec ${pkgs.python3}/bin/python3 ${./configs/niri/spawn-workspace-daemon.py}
         '';
-        checkPhase = "";
-      };
+      in
+      with pkgs;
+      [
+        inputs.helix.outputs.packages.${system}.default
+        # helix
+        discord
+        spotify
+        signal-desktop
+        zoom-us
+        chromium
+        firefox
+        rust-analyzer
+        typescript-language-server
+        nodejs_22
+        peek
+        (pkgs.writeShellScriptBin "nr" ''
+          nix run nixpkgs#"$@"
+        '')
+        nix-flamegraph
+        niri-spawn-workspace-daemon
+        libnotify
+        wl-clipboard
+        sox
+        nautilus
+        vial
+      ];
 
-      niri-spawn-workspace-daemon =
-        pkgs.writeShellScriptBin "niri-spawn-workspace-daemon" ''
-          exec ${pkgs.python3}/bin/python3 ${
-            ./configs/niri/spawn-workspace-daemon.py
-          }
-        '';
-    in with pkgs; [
-      inputs.helix.outputs.packages.${system}.default
-      # helix
-      discord
-      spotify
-      signal-desktop
-      zoom-us
-      chromium
-      firefox
-      rust-analyzer
-      typescript-language-server
-      nodejs_22
-      peek
-      (pkgs.writeShellScriptBin "nr" ''
-        nix run nixpkgs#"$@"
-      '')
-      nix-flamegraph
-      niri-spawn-workspace-daemon
-      libnotify
-      wl-clipboard
-      sox
-      nautilus
-      vial
-    ];
-
-    sessionVariables = { EDITOR = "hx"; };
+    sessionVariables = {
+      EDITOR = "hx";
+    };
 
     file.".config/niri".source = ./configs/niri;
     file.".config/alacritty".source = ./configs/alacritty;
     file.".config/helix".source = ./configs/helix;
     file.".claude/CLAUDE.md".source = ./configs/claude/CLAUDE.md;
     # settings.json is merged (not symlinked) so Claude can write to it (e.g. voice mode)
-    file.".claude/managed-settings.json".source =
-      ./configs/claude/settings.json;
+    file.".claude/managed-settings.json".source = ./configs/claude/settings.json;
   };
 
   xdg = {
@@ -110,8 +120,11 @@
       name = "Chromium (New Window)";
       exec = "chromium --new-window %u";
       terminal = false;
-      mimeType =
-        [ "text/html" "x-scheme-handler/http" "x-scheme-handler/https" ];
+      mimeType = [
+        "text/html"
+        "x-scheme-handler/http"
+        "x-scheme-handler/https"
+      ];
     };
     mimeApps = {
       enable = true;
@@ -146,9 +159,15 @@
           show_notifications = true;
           min_time_to_notify = 5000;
         };
-        nix_shell = { format = "[$symbol$name]($style) "; };
-        rust = { format = "$symbol"; };
-        nodejs = { format = "$symbol"; };
+        nix_shell = {
+          format = "[$symbol$name]($style) ";
+        };
+        rust = {
+          format = "$symbol";
+        };
+        nodejs = {
+          format = "$symbol";
+        };
       };
     };
 
@@ -179,7 +198,9 @@
           email = "guillem.cordoba@gmail.com";
         };
         init.defaultBranch = "main";
-        push = { autoSetupRemote = true; };
+        push = {
+          autoSetupRemote = true;
+        };
         core.editor = "hx";
       };
     };
@@ -192,12 +213,6 @@
       enable = true;
       defaultCacheTtl = 1800;
     };
-
-    flameshot = {
-      enable = true;
-      settings = { General = { useGrimAdapter = true; }; };
-    };
-
   };
   programs.atuin = {
     enable = true;
@@ -212,20 +227,19 @@
 
   programs.carapace.enable = true;
 
-  home.activation.mergeClaudeSettings =
-    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      MANAGED="$HOME/.claude/managed-settings.json"
-      SETTINGS="$HOME/.claude/settings.json"
-      if [ -f "$MANAGED" ]; then
-        if [ -f "$SETTINGS" ]; then
-          # Merge: managed settings take priority, user-added keys are preserved
-          ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$SETTINGS" "$MANAGED" > "$SETTINGS.tmp"
-          mv "$SETTINGS.tmp" "$SETTINGS"
-        else
-          cp "$MANAGED" "$SETTINGS"
-        fi
+  home.activation.mergeClaudeSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    MANAGED="$HOME/.claude/managed-settings.json"
+    SETTINGS="$HOME/.claude/settings.json"
+    if [ -f "$MANAGED" ]; then
+      if [ -f "$SETTINGS" ]; then
+        # Merge: managed settings take priority, user-added keys are preserved
+        ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$SETTINGS" "$MANAGED" > "$SETTINGS.tmp"
+        mv "$SETTINGS.tmp" "$SETTINGS"
+      else
+        cp "$MANAGED" "$SETTINGS"
       fi
-    '';
+    fi
+  '';
 
   dconf.settings."org/gnome/desktop/interface" = {
     color-scheme = "prefer-dark";
