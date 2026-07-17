@@ -238,15 +238,6 @@
       defaultCacheTtl = 1800;
     };
 
-    flameshot = {
-      enable = true;
-      settings = {
-        General = {
-          useGrimAdapter = true;
-        };
-      };
-    };
-
   };
   programs.atuin = {
     enable = true;
