@@ -2,10 +2,16 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, pkgs-unstable, ... }:
+{
+  config,
+  pkgs,
+  pkgs-unstable,
+  ...
+}:
 
 {
-  imports = [ # Include the results of the hardware scan.
+  imports = [
+    # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
 
@@ -13,7 +19,10 @@
   boot.loader.systemd-boot.enable = true;
   boot.supportedFilesystems = [ "ntfs" ];
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" "armv7l-linux" ];
+  boot.binfmt.emulatedSystems = [
+    "aarch64-linux"
+    "armv7l-linux"
+  ];
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -80,7 +89,13 @@
   users.users.guillem = {
     isNormalUser = true;
     description = "guillem";
-    extraGroups = [ "networkmanager" "wheel" "audio" "docker" "dialout" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "audio"
+      "docker"
+      "dialout"
+    ];
   };
 
   # Allow unfree packages
@@ -89,39 +104,44 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = (with pkgs; [
-    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    wget
-    xrandr
-    autorandr
-    alacritty
-    cachix
-    killall
-    lf
-    pavucontrol
-    nil
-    caddy
-    appimage-run
-    unzip
-    xsel
-    transmission_4-gtk
-    zulu8
-    nixfmt
-    pass
+  environment.systemPackages =
+    (with pkgs; [
+      #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+      wget
+      xrandr
+      autorandr
+      alacritty
+      cachix
+      killall
+      lf
+      pavucontrol
+      nil
+      caddy
+      appimage-run
+      unzip
+      xsel
+      transmission_4-gtk
+      zulu8
+      nixfmt
+      pass
 
-    svelte-language-server
-    # nodePackages."typescript-svelte-plugin"
-    jdt-language-server
-    just
-    dua
-    gh
-    bluetui
-    mold
-  ]) ++ [ pkgs-unstable.claude-code ];
+      svelte-language-server
+      # nodePackages."typescript-svelte-plugin"
+      jdt-language-server
+      just
+      dua
+      gh
+      bluetui
+      mold
+    ])
+    ++ [ pkgs-unstable.claude-code ];
 
   xdg.portal.enable = true;
   xdg.portal.config.common.default = "*";
-  xdg.portal.config.niri.default = [ "gnome" "gtk" ];
+  xdg.portal.config.niri.default = [
+    "gnome"
+    "gtk"
+  ];
   xdg.portal.config.niri."org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
   xdg.portal.config.niri."org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
   xdg.portal.xdgOpenUsePortal = true;
@@ -131,8 +151,10 @@
     pkgs.xdg-desktop-portal-gnome
     pkgs.xdg-desktop-portal-wlr
   ];
-  environment.pathsToLink =
-    [ "/share/xdg-desktop-portal" "/share/applications" ];
+  environment.pathsToLink = [
+    "/share/xdg-desktop-portal"
+    "/share/applications"
+  ];
   programs.xwayland.enable = true;
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   environment.sessionVariables.ELECTRON_OZONE_PLATFORM_HINT = "wayland";
@@ -194,7 +216,10 @@
 
   services.upower.enable = true;
 
-  services.udev.packages = with pkgs; [ vial via ];
+  services.udev.packages = with pkgs; [
+    vial
+    via
+  ];
 
   # services.flatpak.enable = true;
 
@@ -230,9 +255,15 @@
 
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
 
-      trusted-users = [ "root" "guillem" ];
+      trusted-users = [
+        "root"
+        "guillem"
+      ];
     };
   };
 }
