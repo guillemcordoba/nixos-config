@@ -17,6 +17,7 @@
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 10;
   boot.supportedFilesystems = [ "ntfs" ];
   boot.loader.efi.canTouchEfiVariables = true;
   boot.binfmt.emulatedSystems = [
