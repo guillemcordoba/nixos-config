@@ -30,51 +30,57 @@
 
   nixConfig = {
     extra-substituters = [ "https://helix.cachix.org" ];
-    extra-trusted-public-keys =
-      [ "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs=" ];
+    extra-trusted-public-keys = [ "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs=" ];
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, ... }: {
-    nixosConfigurations = {
-      guillem = nixpkgs.lib.nixosSystem rec {
-        system = "x86_64-linux";
-        specialArgs = {
-          pkgs-unstable = import inputs.nixpkgs-unstable {
-            inherit system;
-            config.allowUnfree = true;
+  outputs =
+    inputs@{ nixpkgs, home-manager, ... }:
+    {
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt;
+
+      nixosConfigurations = {
+        guillem = nixpkgs.lib.nixosSystem rec {
+          system = "x86_64-linux";
+          specialArgs = {
+            pkgs-unstable = import inputs.nixpkgs-unstable {
+              inherit system;
+              config.allowUnfree = true;
+            };
+            inherit inputs;
           };
-          inherit inputs;
+          modules = [
+            # To create bootable ISO images
+            # (nixpkgs
+            #   + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix")
+
+            ./configuration.nix
+            ./modules/niri.nix
+            ./modules/dankmaterialshell.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.guillem = import ./home.nix;
+              home-manager.extraSpecialArgs = { inherit inputs system; };
+
+              # Optionally, use home-manager.extraSpecialArgs to pass
+              # arguments to home.nix
+            }
+            ({ pkgs, ... }: {
+              nixpkgs.overlays = [
+                inputs.rust-overlay.overlays.default
+
+              ];
+              environment.systemPackages = [
+                (pkgs.rust-bin.stable.latest.default.override {
+                  extensions = [ "rust-src" ];
+                })
+                pkgs.clang
+              ];
+            })
+
+          ];
         };
-        modules = [
-          # To create bootable ISO images
-          # (nixpkgs
-          #   + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix")
-
-          ./configuration.nix
-          ./modules/niri.nix
-          ./modules/dankmaterialshell.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.guillem = import ./home.nix;
-            home-manager.extraSpecialArgs = { inherit inputs system; };
-
-            # Optionally, use home-manager.extraSpecialArgs to pass
-            # arguments to home.nix
-          }
-          ({ pkgs, ... }: {
-            nixpkgs.overlays = [ inputs.rust-overlay.overlays.default ];
-            environment.systemPackages = [
-              (pkgs.rust-bin.stable.latest.default.override {
-                extensions = [ "rust-src" ];
-              })
-              pkgs.clang
-            ];
-          })
-
-        ];
       };
     };
-  };
 }
