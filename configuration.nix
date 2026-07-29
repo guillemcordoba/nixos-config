@@ -217,6 +217,54 @@
 
   services.upower.enable = true;
 
+  # Undo the ThinkPad L490 firmware self-limit: Lenovo sets a 30C TCC offset so the
+  # CPU throttles to ~1.9GHz at 70C. throttled raises the thermal trip to 85C, lifts
+  # the power limit, and undervolts -100mV -> ~2.95GHz sustained all-core (~+55%),
+  # re-applying on boot/resume/AC change. Lower CORE/CACHE to -80 if ever unstable.
+  services.throttled = {
+    enable = true;
+    extraConfig = ''
+      [GENERAL]
+      Enabled: True
+      Sysfs_Power_Path: /sys/class/power_supply/AC*/online
+      Autoreload: True
+
+      [BATTERY]
+      Update_Rate_s: 30
+      PL1_Tdp_W: 25
+      PL1_Duration_s: 28
+      PL2_Tdp_W: 29
+      PL2_Duration_S: 0.002
+      Trip_Temp_C: 80
+      cTDP: 0
+      Disable_BDPROCHOT: False
+
+      [AC]
+      Update_Rate_s: 5
+      PL1_Tdp_W: 35
+      PL1_Duration_s: 28
+      PL2_Tdp_W: 44
+      PL2_Duration_S: 0.002
+      Trip_Temp_C: 85
+      cTDP: 2
+      Disable_BDPROCHOT: False
+
+      [UNDERVOLT.AC]
+      CORE: -100
+      GPU: 0
+      CACHE: -100
+      UNCORE: 0
+      ANALOGIO: 0
+
+      [UNDERVOLT.BATTERY]
+      CORE: -100
+      GPU: 0
+      CACHE: -100
+      UNCORE: 0
+      ANALOGIO: 0
+    '';
+  };
+
   # Suspend when the laptop lid is closed. Combined with the swayidle
   # `before-sleep` handler in home.nix, this means closing the lid locks
   # the session (and it stays locked on resume).
