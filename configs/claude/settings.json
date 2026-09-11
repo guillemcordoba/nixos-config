@@ -3,18 +3,5 @@
     "rust-analyzer-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true
   },
-  "alwaysThinkingEnabled": true,
-  "hooks": {
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "input=$(cat) && msg=$(echo \"$input\" | grep -oP '\"message\"\\s*:\\s*\"\\K[^\"]*') && cwd=$(echo \"$input\" | grep -oP '\"cwd\"\\s*:\\s*\"\\K[^\"]*') && proj=${cwd##*/} && notify-send \"Claude Code [${proj:-unknown}]\" \"${msg:-Needs your attention}\""
-          }
-        ]
-      }
-    ]
-  }
+  "alwaysThinkingEnabled": true
 }

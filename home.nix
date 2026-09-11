@@ -14,7 +14,13 @@
   ];
   programs.dank-material-shell = {
     enable = true;
-    dgop.package = inputs.dgop.packages.${system}.default;
+
+    # Our nixpkgs' Go vendors modules differently than the Go upstream computed
+    # their vendorHash with. If this mismatches after an update, paste the new
+    # "got:" hash from the build error.
+    package = (inputs.dms.lib.mkDmsShell pkgs).overrideAttrs {
+      vendorHash = "sha256-Ls6Dquwt0fzDCEjZ6FfTsZTXDI8408mFdByv/OWHVgI=";
+    };
 
     systemd = {
       enable = true; # Systemd service for auto-start
