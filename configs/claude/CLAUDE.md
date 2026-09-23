@@ -31,3 +31,7 @@ Only skip this workflow for trivial changes (typo fixes, one-line tweaks I've al
 - Assume `nix` is always available.
 - Do not modify `/etc/nixos/` or any system configuration files unless explicitly asked.
 - When suggesting dependency additions to a project, suggest adding them to `flake.nix` devShell inputs rather than installing globally.
+
+## Code style
+
+- **Rename instead of commenting.** If a doc-comment explains what a function or variable *is*, the name is wrong: fix the name and delete the comment. Keep only *why* text — a hidden constraint, a deliberate absence, a rationale that would surprise a reader.
