@@ -85,6 +85,7 @@
         discord
         spotify
         signal-desktop
+        slack
         zoom-us
         chromium
         firefox

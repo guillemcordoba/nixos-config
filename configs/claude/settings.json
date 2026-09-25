@@ -1,7 +1,20 @@
 {
   "enabledPlugins": {
     "rust-analyzer-lsp@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true
+    "typescript-lsp@claude-plugins-official": true,
+    "claude-mermaid@claude-mermaid": true
+  },
+  "extraKnownMarketplaces": {
+    "claude-mermaid": {
+      "source": {
+        "source": "github",
+        "repo": "veelenga/claude-mermaid"
+      }
+    }
+  },
+  "env": {
+    "PUPPETEER_SKIP_DOWNLOAD": "1",
+    "PUPPETEER_EXECUTABLE_PATH": "/etc/profiles/per-user/guillem/bin/chromium"
   },
   "alwaysThinkingEnabled": true
 }
