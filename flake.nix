@@ -56,6 +56,7 @@
             ./configuration.nix
             ./modules/niri.nix
             ./modules/dankmaterialshell.nix
+            ./modules/disk-cleanup.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;

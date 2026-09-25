@@ -77,6 +77,19 @@
         niri-spawn-workspace-daemon = pkgs.writeShellScriptBin "niri-spawn-workspace-daemon" ''
           exec ${pkgs.python3}/bin/python3 ${./configs/niri/spawn-workspace-daemon.py}
         '';
+
+        # The claude-mermaid MCP runs an unpinned `npx @mermaid-js/mermaid-cli -w ...`,
+        # and mermaid-cli 12 removed -w. Remove once claude-mermaid pins or migrates to --size.
+        npx-pinning-mermaid-cli-11 = lib.hiPrio (
+          pkgs.writeShellScriptBin "npx" ''
+            args=()
+            for arg in "$@"; do
+              [ "$arg" = "@mermaid-js/mermaid-cli" ] && arg="@mermaid-js/mermaid-cli@11"
+              args+=("$arg")
+            done
+            exec ${pkgs.nodejs_22}/bin/npx "''${args[@]}"
+          ''
+        );
       in
       with pkgs;
       [
@@ -92,6 +105,7 @@
         rust-analyzer
         typescript-language-server
         nodejs_22
+        npx-pinning-mermaid-cli-11
         peek
         (pkgs.writeShellScriptBin "nr" ''
           nix run nixpkgs#"$@"
@@ -112,6 +126,15 @@
     file.".config/niri".source = ./configs/niri;
     file.".config/alacritty".source = ./configs/alacritty;
     file.".config/helix".source = ./configs/helix;
+    # Shares compiled dependencies across checkouts of the same project.
+    file.".cargo/config.toml".text = ''
+      [build]
+      rustc-wrapper = "${pkgs.sccache}/bin/sccache"
+    '';
+    file.".config/sccache/config".text = ''
+      [cache.disk]
+      size = ${toString (30 * 1024 * 1024 * 1024)}
+    '';
     file.".claude/CLAUDE.md".source = ./configs/claude/CLAUDE.md;
     # settings.json is merged (not symlinked) so Claude can write to it (e.g. voice mode)
     file.".claude/managed-settings.json".source = ./configs/claude/settings.json;
