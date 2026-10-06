@@ -130,6 +130,10 @@
     file.".cargo/config.toml".text = ''
       [build]
       rustc-wrapper = "${pkgs.sccache}/bin/sccache"
+      # Half the 14900K's 32 threads (= P-core threads): the default spawns dozens of
+      # parallel mold links that saturate the NVMe and stall the desktop, while
+      # single builds rarely keep more than ~16 rustc busy anyway.
+      jobs = 16
     '';
     file.".config/sccache/config".text = ''
       [cache.disk]
