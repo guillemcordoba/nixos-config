@@ -16,5 +16,6 @@
     "PUPPETEER_SKIP_DOWNLOAD": "1",
     "PUPPETEER_EXECUTABLE_PATH": "/etc/profiles/per-user/guillem/bin/chromium"
   },
-  "alwaysThinkingEnabled": true
+  "alwaysThinkingEnabled": true,
+  "remoteControlAtStartup": true
 }
