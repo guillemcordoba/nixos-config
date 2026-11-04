@@ -10,11 +10,6 @@
 }:
 
 {
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-  ];
-
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 10;
@@ -25,7 +20,6 @@
     "armv7l-linux"
   ];
 
-  networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -40,10 +34,6 @@
     enable = true;
     setSocketVariable = true;
   };
-  virtualisation.virtualbox.host.enableExtensionPack = true;
-  virtualisation.virtualbox.host.enable = true;
-
-  users.extraGroups.vboxusers.members = [ "guillem" ];
   # virtualisation.podman.enable = true;
 
   # Set your time zone.
@@ -71,7 +61,6 @@
 
   services.xserver = {
     enable = true;
-    videoDrivers = [ "nvidia" ];
     # keyboard
     xkb = {
       layout = "es";
@@ -166,6 +155,49 @@
   systemd.tmpfiles.rules = [
     "L+ /usr/libexec/xdg-desktop-portal - - - - ${pkgs.xdg-desktop-portal}/libexec/xdg-desktop-portal"
   ];
+
+  # sound.enable = true;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    # If you want to use JACK applications, uncomment this
+    #jack.enable = true;
+  };
+
+  # bluetooth CLI
+  # Example:
+  # $ bluetoothctl
+  # [bluetooth] # power on
+  # [bluetooth] # agent on
+  # [bluetooth] # default-agent
+  # [bluetooth] # scan on
+  # ...put device in pairing mode and wait [hex-address] to appear here...
+  # [bluetooth] # pair [hex-address]
+  # [bluetooth] # connect [hex-address]
+  services.blueman.enable = true;
+
+  hardware = {
+    enableAllFirmware = true;
+
+    # pulseaudio = {
+    #   enable = true;
+    #   support32Bit = true;
+    #   package = pkgs.pulseaudioFull;
+    # };
+
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
+
+    bluetooth = {
+      enable = true; # enables support for Bluetooth
+      powerOnBoot = true; # powers up the default Bluetooth controller on boot
+    };
+  };
 
   programs.gnupg = {
     agent = {

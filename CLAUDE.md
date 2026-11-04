@@ -8,11 +8,14 @@ Personal NixOS system configuration for user **guillem**, managed with flakes an
 flake.nix                  # Flake entry point: inputs, overlays, NixOS + home-manager wiring
 flake.lock                 # Pinned dependency versions
 configuration.nix          # System-level NixOS config (packages, services, users, locale)
-hardware-configuration.nix # Hardware-specific config (device type, filesystems, drivers, audio, bluetooth)
 home.nix                   # Home-manager config (user packages, shell, git, editor, dotfiles)
+hosts/
+  workstation/             # Desktop: nvidia, VirtualBox, Claude Remote Control repos
+  thinkpad/                # X1 Carbon Gen 9: lid suspend, swayidle, laptop cargo settings
 modules/
   niri.nix                 # Niri window manager NixOS module
   dankmaterialshell.nix    # DankMaterialShell NixOS module (currently a stub)
+  claude-remote-control.nix # One always-on Remote Control service per repo in services.claudeRemoteControl.repos
 configs/
   alacritty/alacritty.toml # Terminal emulator config
   helix/config.toml        # Helix editor settings
@@ -22,14 +25,15 @@ configs/
   zed/keymap.json          # Zed keybindings
   qtile/config.py          # Qtile WM config (legacy, X11)
   claude/CLAUDE.md         # Claude Code per-user CLAUDE.md (symlinked to ~/.claude/CLAUDE.md)
-guides/                    # Personal reference notes (wifi, iso-image, virtualbox)
+guides/                    # Personal reference notes (wifi, iso-image, virtualbox, install-thinkpad)
 ```
 
-## Branching Strategy
+## Machines
 
-- **`main`**: Desktop configuration (likely has nvidia drivers enabled, different hardware-configuration.nix)
-- **`thinkpad`**: Laptop configuration (current branch; `DEVICE_TYPE=LAPTOP`, Intel CPU, nvidia configured but xserver videoDrivers commented out)
-- Differences between branches are minimal: `configuration.nix`, `hardware-configuration.nix`, and `flake.lock`. Changes are regularly merged from `main` into `thinkpad`.
+All machines are configured from one branch, `main`. Each has a `nixosConfigurations.<hostname>` entry in `flake.nix` and a `hosts/<hostname>/` directory. Anything specific to a machine goes in its host directory, including home-manager settings via `home-manager.users.guillem`, rather than in a long-lived branch.
+
+- **`workstation`**: Desktop
+- **`thinkpad`**: X1 Carbon Gen 9. Its `hardware-configuration.nix` is generated during install, see `guides/install-thinkpad.md`; until then this config intentionally fails to evaluate.
 
 ## Key Technical Details
 
@@ -44,8 +48,8 @@ guides/                    # Personal reference notes (wifi, iso-image, virtualb
 - **dgop**: Companion tool for DMS from `AvengeMedia/dgop`
 
 ### System Configuration (`configuration.nix`)
-- Single NixOS configuration named `guillem`, `x86_64-linux`
-- Hostname: `nixos`
+- Shared by every host, `x86_64-linux`
+- The hostname comes from the host's name in `flake.nix`
 - Locale: `ca_ES.UTF-8` (Catalan), keyboard layout: `es` variant `cat`
 - Timezone: `Europe/Madrid`
 - Display manager: GDM with Wayland
@@ -96,6 +100,6 @@ nixfmt *.nix modules/*.nix
 - Packages from unstable channel use `pkgs-unstable.<pkg>` (passed via `specialArgs`)
 - New dotfile configs go in `configs/<app>/` and are linked via `home.file` in `home.nix`
 - New NixOS modules go in `modules/` and are added to the `modules` list in `flake.nix`
-- `hardware-configuration.nix` is branch-specific - avoid modifying it unless targeting a specific machine
+- `hosts/<hostname>/hardware-configuration.nix` is generated per machine - avoid modifying it unless targeting that machine
 - The `stateVersion` is `"23.11"` - do not change this
 - When adding flake inputs, remember to pass them through `specialArgs` or `extraSpecialArgs` as needed

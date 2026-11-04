@@ -6,6 +6,10 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-hardware = {
+      url = "github:NixOS/nixos-hardware";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     helix.url = "github:helix-editor/helix";
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
@@ -38,8 +42,9 @@
     {
       formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt;
 
-      nixosConfigurations = {
-        guillem = nixpkgs.lib.nixosSystem rec {
+      nixosConfigurations = nixpkgs.lib.genAttrs [ "workstation" "thinkpad" ] (
+        hostName:
+        nixpkgs.lib.nixosSystem rec {
           system = "x86_64-linux";
           specialArgs = {
             pkgs-unstable = import inputs.nixpkgs-unstable {
@@ -54,9 +59,12 @@
             #   + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix")
 
             ./configuration.nix
+            ./hosts/${hostName}
+            { networking.hostName = hostName; }
             ./modules/niri.nix
             ./modules/dankmaterialshell.nix
             ./modules/disk-cleanup.nix
+            ./modules/claude-remote-control.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -81,7 +89,7 @@
             })
 
           ];
-        };
-      };
+        }
+      );
     };
 }
