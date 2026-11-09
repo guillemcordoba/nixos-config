@@ -70,7 +70,10 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.guillem = import ./home.nix;
-              home-manager.extraSpecialArgs = { inherit inputs system; };
+              home-manager.extraSpecialArgs = {
+                inherit inputs system;
+                inherit (specialArgs) pkgs-unstable;
+              };
 
               # Optionally, use home-manager.extraSpecialArgs to pass
               # arguments to home.nix

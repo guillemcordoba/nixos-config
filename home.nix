@@ -1,5 +1,6 @@
 {
   pkgs,
+  pkgs-unstable,
   lib,
   inputs,
   system,
@@ -16,6 +17,9 @@
     enable = true;
 
     package = inputs.dms.lib.mkDmsShell pkgs;
+    # DMS tracks recent Quickshell features (e.g. `comparisonMode`, 0.3.2+);
+    # stable's 0.3.0 silently fails to load the bar.
+    quickshell.package = pkgs-unstable.quickshell;
 
     systemd = {
       enable = true; # Systemd service for auto-start
