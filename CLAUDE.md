@@ -38,10 +38,10 @@ All machines are configured from one branch, `main`. Each has a `nixosConfigurat
 ## Key Technical Details
 
 ### Flake Inputs
-- **nixpkgs**: `nixos-25.11` (stable channel)
+- **nixpkgs**: `nixos-26.05` (stable channel)
 - **nixpkgs-unstable**: Used for select packages (e.g. `claude-code`)
-- **home-manager**: `release-25.11`, follows nixpkgs
-- **helix**: Pinned to `25.07` branch with cachix binary cache
+- **home-manager**: `release-26.05`, follows nixpkgs
+- **helix**: Tracks the default branch, with cachix binary cache
 - **rust-overlay**: For Rust toolchain with `rust-src`
 - **niri**: Wayland compositor via `sodiboo/niri-flake`, overlaid onto nixpkgs
 - **dms** (DankMaterialShell): Shell/bar from `AvengeMedia/DankMaterialShell`

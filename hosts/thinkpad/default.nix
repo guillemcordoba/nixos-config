@@ -7,6 +7,12 @@
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-9th-gen
   ];
 
+  # Dual boot with Windows: the Windows ESP is only 260 MB, too small for
+  # NixOS kernels. systemd-boot itself lives on the ESP (so it still finds
+  # Windows), while kernels and initrds go to a 1 GB XBOOTLDR partition.
+  boot.loader.efi.efiSysMountPoint = "/efi";
+  boot.loader.systemd-boot.xbootldrMountPoint = "/boot";
+
   environment.sessionVariables.DEVICE_TYPE = "LAPTOP";
 
   # Suspend when the laptop lid is closed. Combined with the swayidle
