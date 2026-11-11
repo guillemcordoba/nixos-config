@@ -1,3 +1,7 @@
+# Written by DMS at runtime from the current wallpaper/theme.
+[general]
+import = ["~/.config/alacritty/dank-theme.toml"]
+
 [font]
 size = 12.0
 
