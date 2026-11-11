@@ -648,3 +648,6 @@ include optional=true "dms/outputs.kdl"
 include optional=true "dms/cursor.kdl"
 include optional=true "dms/input.kdl"
 include optional=true "dms/windowrules.kdl"
+
+// Last so it wins over the DMS theme above.
+include "dms-overrides.kdl"
