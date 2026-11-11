@@ -9,7 +9,8 @@
     xwayland-satellite-unstable
   ];
 
-  security.soteria.enable = true;
+  # DMS runs its own polkit agent; a second agent fails to register.
+  systemd.user.services.niri-flake-polkit.enable = false;
 
   # programs.niri.settings = {
   #   input.keyboard.xkb.layout = "no";

@@ -127,7 +127,8 @@
       EDITOR = "hx";
     };
 
-    file.".config/niri".source = ./configs/niri;
+    # Linked per file so ~/.config/niri/dms/ stays writable for DMS.
+    file.".config/niri/config.kdl".source = ./configs/niri/config.kdl;
     file.".config/alacritty".source = ./configs/alacritty;
     file.".config/helix".source = ./configs/helix;
     # Shares compiled dependencies across checkouts of the same project.
