@@ -16,6 +16,10 @@
     "PUPPETEER_SKIP_DOWNLOAD": "1",
     "PUPPETEER_EXECUTABLE_PATH": "/etc/profiles/per-user/guillem/bin/chromium"
   },
+  "statusLine": {
+    "type": "command",
+    "command": "if [ -n \"$SSH_CONNECTION\" ]; then printf '\\033[1;33mssh · %s\\033[0m' \"$(hostname)\"; fi"
+  },
   "alwaysThinkingEnabled": true,
   "remoteControlAtStartup": true
 }
