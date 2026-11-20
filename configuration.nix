@@ -234,6 +234,9 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  # Lets the machines reach each other from any network, e.g. the thinkpad
+  # doing its Rust work on the workstation over SSH.
+  services.tailscale.enable = true;
   services.avahi = {
     enable = true;
     nssmdns4 = true;

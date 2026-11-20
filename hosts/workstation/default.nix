@@ -19,6 +19,10 @@
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "guillem" ];
 
+  users.users.guillem.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILB/q9xX95SLDHLZKk8A+a3ZvO+DfA/Cv+MCuZqnjtgb guillem@thinkpad"
+  ];
+
   services.claudeRemoteControl.repos = {
     pimpampum.path = "/home/guillem/pimpampum";
   };

@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   imports = [
@@ -20,6 +20,20 @@
   # the session (and it stays locked on resume).
   services.logind.settings.Login.HandleLidSwitch = "suspend";
 
+  # This unit's left woofer buzzes above roughly -15 dB of output (measured
+  # 2026-11-20; the right one is clean at full volume). DAC2 feeds only the
+  # woofer pair and PipeWire only moves Master, so lowering its left channel
+  # keeps that speaker under the threshold at any volume. Remove once the
+  # speaker assembly is replaced.
+  systemd.services.attenuate-left-woofer = {
+    wantedBy = [ "sound.target" ];
+    after = [ "sound.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.alsa-utils}/bin/amixer -c sofhdadsp sset DAC2 -- -10.5dB,0dB";
+    };
+  };
+
   home-manager.users.guillem =
     { pkgs, ... }:
     {
@@ -29,6 +43,20 @@
         CARGO_PROFILE_DEV_CODEGEN_UNITS = "256";
         CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER = "clang";
         CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS = "-C link-arg=-fuse-ld=mold";
+      };
+
+      programs.ssh = {
+        enable = true;
+        enableDefaultConfig = false;
+        # Resolved by Tailscale MagicDNS, so it works away from home too.
+        settings.workstation = {
+          HostName = "workstation";
+          User = "guillem";
+          # Editors open many short-lived connections; reusing one keeps them instant.
+          ControlMaster = "auto";
+          ControlPath = "~/.ssh/control-%C";
+          ControlPersist = "10m";
+        };
       };
 
       # Lock the screen after 1 minute idle and before the system sleeps
