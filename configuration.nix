@@ -103,6 +103,7 @@
       alacritty
       cachix
       killall
+      brightnessctl
       lf
       pavucontrol
       nil
