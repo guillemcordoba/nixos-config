@@ -125,7 +125,11 @@
       bluetui
       mold
     ])
-    ++ [ pkgs-unstable.claude-code ];
+    ++ [
+      # The wrapper prepends alsa-lib to LD_LIBRARY_PATH, which every program
+      # Claude launches inherits and loads ahead of its own dev shell's copy.
+      (pkgs-unstable.claude-code.override { alsa-lib = pkgs-unstable.emptyDirectory; })
+    ];
 
   xdg.portal.enable = true;
   xdg.portal.config.common.default = "*";
