@@ -35,7 +35,7 @@
   };
 
   home-manager.users.guillem =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
     {
       home.sessionVariables = {
         # Faster rust compilation in laptop
@@ -58,6 +58,15 @@
           ControlPersist = "10m";
         };
       };
+
+      # The shared file sets the desktop gaps; the laptop keeps tighter ones.
+      home.file.".config/niri/dms-overrides.kdl".source = lib.mkForce (
+        pkgs.writeText "dms-overrides.kdl" (
+          builtins.replaceStrings [ "gaps 12" ] [ "gaps 6" ] (
+            builtins.readFile ../../configs/niri/dms-overrides.kdl
+          )
+        )
+      );
 
       # Lock the screen after 1 minute idle and before the system sleeps
       # (e.g. when the laptop lid is closed). swayidle runs `loginctl
